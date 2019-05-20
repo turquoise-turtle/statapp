@@ -6,12 +6,27 @@
 		<title>StatApp</title>
 		<meta name="description" content="Record and analyse your own statistics">
 		<link rel="stylesheet" href="normalize.css">
-		<link rel="stylesheet" href="main.css">
+		<link rel="stylesheet" href="base.css">
+		<link rel="stylesheet" href="index.css">
+		<script src="mithril.js"></script>
+		<script src="pouchdb-7.0.0.js"></script>
+		<script src="statapp.js"></script>
 	</head>
 	<body>
-		<h1>StatApp</h1>
-		<div>
-			<h1>+</h1>
-		</div>
+		<h1 class="title">StatApp</h1>
+		<div class="floating-plus"><h1 class="floating-plus-text"><a href="#">+</a></h1></div>
+		<section class="app" id="app">
+<!-- 			This card is hidden anyway -->
+			<section class="card">
+				<h3>DEFAULT</h3>
+				<section class="card-links">
+					<a href="#">You shouldn't be able to see me</a>
+					<a href="#">But you do</a>
+					<a href="#">So something must have gone wrong</a>
+				</section>
+			</section>
+		</section>
+		
+		<script src="index.js"></script>
 	</body>
 </html>

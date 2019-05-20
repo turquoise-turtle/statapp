@@ -1,0 +1,63 @@
+/* title area */
+.title {
+	display: flex;
+	justify-content: center;
+}
+
+/* list of topics */
+.app {
+	display: grid;
+	grid-gap: 2rem;
+	margin-bottom: 2rem;
+}
+/* Larger than mobile */
+@media (min-width: 600px) {
+	.app {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+/* Larger than phablet */
+@media (min-width: 900px) {
+	.app {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+.card {
+	margin: auto;
+	border: 1px solid black;
+	border-radius: 1rem;
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+	padding-bottom: 0.5rem;
+}
+
+/*.card-links > a:nth-child(even):after {
+	content: '|';
+}*/
+.card-links > a:not(:last-child) {
+	margin-right: 0.25rem;
+}
+.card-links > a:not(:last-child):after {
+	content: '|';
+}
+
+/* plus button */
+.floating-plus {
+	/* positioning the button in the bottom right corner */
+	position: fixed;
+	bottom: 1rem;
+	right: 1.5rem;
+	
+	background-color: lightblue;
+	
+	/* make the button a circle */
+	width: 2.5rem;
+	height: 2.5rem;
+	border-radius: 2rem;
+	text-align: center;
+}
+.floating-plus-text {
+	margin: 0;
+	color: black;
+}
