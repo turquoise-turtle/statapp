@@ -15,7 +15,73 @@
 	<body>
 		<h1 class="title"><a href="./index.html">StatApp</a></h1>
 		<section class="app" id="app">
-			
+			<h2>New Topic:</h2>
+			<form> <!-- to use the valid/invalid CSS types? -->
+				<label for="topicName">Name of topic: </label>
+				<input type="text" id="topicName">
+				
+				<!-- -->
+				<!--	 -->
+				<!-- X value -->
+				<label for="xName">Name of x value: </label>
+				<input type="text" id="xName">
+				
+				<label for="xType">Data type of x value: </label>
+				<select id="xType">
+					<option value="xTypeNumber">Number</option>
+					<option value="xTypeTime">Time</option>
+				</select>
+				<!-- the value in the above select box could correspond to a class, which then sets one of the following divs to show up -->
+				
+				<div class="xTypeNumber">
+					<label for="xMinBool">Minimum value? </label>
+					<input type="checkbox" id="xMinBool">
+					<input type="text" id="xMinValue">
+				
+					<label for="xMaxBool">Maximum value? </label>
+					<input type="checkbox" id="xMaxBool">
+					<input type="text" id="xMaxValue">
+				</div>
+				
+				<div class="xTypeTime">
+					<!-- add in time min/max? -->
+				</div>
+				
+				<!-- -->
+				<!--	 -->
+				<!-- Y value -->
+				<label for="yName">Name of y value: </label>
+				<input type="text" id="yName">
+				
+				<label for="yType">Data type of y value: </label>
+				<select id="yType">
+					<option value="yTypeNumber">Number</option>
+					<option value="yTypeTime">Time</option>
+				</select>
+				<!-- the value in the above select box could correspond to a class, which then sets one of the following divs to show up -->
+				
+				<div class="yTypeNumber">
+					<label for="yMinBool">Minimum value? </label>
+					<input type="checkbox" id="yMinBool">
+					<input type="text" id="yMinValue">
+				
+					<label for="yMaxBool">Maximum value? </label>
+					<input type="checkbox" id="yMaxBool">
+					<input type="text" id="yMaxValue">
+				</div>
+				
+				<div class="yTypeTime">
+					<!-- add in time min/max? -->
+				</div>
+				
+				<p>It's better for this value to be: </p>
+				<input type="radio" id="yBetterHigher" name="y_better" value="yBetterHigher">
+				<label for="yBetterHigher">Higher</label>
+				<input type="radio" id="yBetterLower" name="y_better" value="yBetterLower">
+				<label for="yBetterLower">Lower</label>
+				
+				<button type="submit" id="saveTopic">Save Topic</button>
+			</form>
 		</section>
 		
 <!-- 		<script src="create.js"></script> -->
