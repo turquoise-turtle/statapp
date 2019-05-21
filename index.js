@@ -7,9 +7,9 @@ for (var i = 0; i < 3; i++) {
 		m('section', {'class':'card'}, [
 			m('h3', 'Topic Name Here'),
 			m('section', {'class':'card-links'}, [
-				m('a', {'href':'#'}, 'Record Data'),
-				m('a', {'href':'#'}, 'View Data'),
-				m('a', {'href':'#'}, 'Best Option')
+				m('a', {'href':'./create.html#'}, 'Record Data'),
+				m('a', {'href':'./results.html#'}, 'View Data'),
+				m('a', {'href':'./bestoption.html#'}, 'Best Option')
 			])
 		])
 	);
@@ -39,22 +39,25 @@ m.render(root, torenderlist)
 // m.render(root, torenderlist);
 
 /*
+bullets = [
+		{x: 20, y:10},
+		{x:50, y:15}
+	]
+
 space(){
 	bulletlist.push({x: currentx, y:10})
 
-bullet() {
+bullet(b) {
 	x
 	y
 	dy
 	
-	[
-		{x: 20, y:10},
-		{x:50, y:15}
-	]
+	return b
+	
 }
 
 draw() {
-	for () {
+	for (b in bullets) {
 		y = y + dy
 		if (y == 100) 
 	}
