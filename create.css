@@ -1,0 +1,22 @@
+/* for now just hide it */
+.xTypeTime, .yTypeTime {
+	display: none;
+}
+
+/* default grid for mobile */
+.axis-section {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	grid-gap: 0.5rem;
+}
+
+/* Larger than mobile */
+@media (min-width: 600px) {
+	
+}
+
+
+
+.better-header {
+	margin-block-end: 0.5rem;
+}

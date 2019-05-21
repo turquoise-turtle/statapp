@@ -1,13 +1,46 @@
 /* this stylesheet is common to all pages on the site, though some pages may have a more specific page stylesheet as well */
 
+/* */
+/* heading – common on all pages */
+.title {
+	display: flex;
+	justify-content: center;
+}
+.title > a {
+	text-decoration: none;
+}
+
+/* */
+/* basic body styles */
 body {
 	/* this font-family combination was found at https://30-seconds.github.io/30-seconds-of-css/#system-font-stack and apparently uses the native font of the operating system through the successive fallbacks */
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+/* */
+/* individual element styles */
 a {
-	text-decoration: none;
+	color: black;
 }
 a:visited {
 	color: black;
+}
+
+.save-button {
+	margin-top: 1rem;
+}
+
+/* */
+/* grid styles */
+
+/* grid setup */
+.thirds {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-gap: 0.5rem;
+}
+
+/* grid utility */
+.fill-two {
+	grid-column: span 2 / auto;
 }

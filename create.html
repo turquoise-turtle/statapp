@@ -7,7 +7,7 @@
 		<meta name="description" content="Record and analyse your own statistics">
 		<link rel="stylesheet" href="normalize.css">
 		<link rel="stylesheet" href="base.css">
-<!-- 		<link rel="stylesheet" href="create.css"> -->
+		<link rel="stylesheet" href="create.css">
 		<script src="mithril.js"></script>
 		<script src="pouchdb-7.0.0.js"></script>
 		<script src="statapp.js"></script>
@@ -15,7 +15,7 @@
 	<body>
 		<h1 class="title"><a href="./index.html">StatApp</a></h1>
 		<section class="app" id="app">
-			<h2>New Topic:</h2>
+			<h2>Create a New Topic</h2>
 			<form> <!-- to use the valid/invalid CSS types? -->
 				<label for="topicName">Name of topic: </label>
 				<input type="text" id="topicName">
@@ -23,7 +23,7 @@
 				<!-- -->
 				<!--	 -->
 				<!-- X value -->
-				<section>
+				<section class="axis-section">
 					<label for="xName">Name of x value: </label>
 					<input type="text" id="xName">
 				
@@ -34,7 +34,7 @@
 					</select>
 					<!-- the value in the above select box could correspond to a class, which then sets one of the following divs to show up -->
 				
-					<div class="xTypeNumber">
+					<div class="xTypeNumber fill-two">
 						<label for="xMinBool">Minimum value? </label>
 						<input type="checkbox" id="xMinBool">
 						<input type="text" id="xMinValue">
@@ -52,7 +52,7 @@
 				<!-- -->
 				<!--	 -->
 				<!-- Y value -->
-				<section>
+				<section class="axis-section">
 					<label for="yName">Name of y value: </label>
 					<input type="text" id="yName">
 				
@@ -63,7 +63,7 @@
 					</select>
 					<!-- the value in the above select box could correspond to a class, which then sets one of the following divs to show up -->
 				
-					<div class="yTypeNumber">
+					<div class="yTypeNumber fill-two">
 						<label for="yMinBool">Minimum value? </label>
 						<input type="checkbox" id="yMinBool">
 						<input type="text" id="yMinValue">
@@ -76,15 +76,17 @@
 					<div class="yTypeTime">
 						<!-- add in time min/max? -->
 					</div>
-				
-					<p>It's better for this value to be: </p>
-					<input type="radio" id="yBetterHigher" name="y_better" value="yBetterHigher">
-					<label for="yBetterHigher">Higher</label>
-					<input type="radio" id="yBetterLower" name="y_better" value="yBetterLower">
-					<label for="yBetterLower">Lower</label>
+					
+					<div class="fill-two">
+						<p class="better-header">It's better for this value to be: </p>
+						<input type="radio" id="yBetterHigher" name="y_better" value="yBetterHigher">
+						<label for="yBetterHigher">Higher</label>
+						<input type="radio" id="yBetterLower" name="y_better" value="yBetterLower">
+						<label for="yBetterLower">Lower</label>
+					</div>
 				</section>
 				
-				<button type="submit" id="saveTopic">Save Topic</button>
+				<button id="saveTopic" class="save-button">Save Topic</button>
 			</form>
 		</section>
 		
