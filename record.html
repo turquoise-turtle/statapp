@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+		<title>StatApp</title>
+		<meta name="description" content="Record and analyse your own statistics">
+		<link rel="stylesheet" href="normalize.css">
+		<link rel="stylesheet" href="base.css">
+<!-- 		<link rel="stylesheet" href="record.css"> -->
+		<script src="mithril.js"></script>
+		<script src="pouchdb-7.0.0.js"></script>
+		<script src="statapp.js"></script>
+	</head>
+	<body>
+		<h1 class="title"><a href="./index.html">StatApp</a></h1>
+		<section class="app" id="app">
+			<h2>Record Data for <span id="topicName"></span></h2>
+			
+			<!-- pick a subtopic -->
+			<label for="subtopicChoice">Pick a subtopic</label>
+			<select id="subtopicChoice">
+				<option value="1">option</option>
+				<option value="2">option2</option>
+			</select>
+			
+			<div>
+				<label for="xAxis">xLabel</label>
+				<input type="number" id="xAxis">
+			</div>
+			
+			<div>
+				<label for="yAxis">yLabel</label>
+				<input type="number" id="yAxis">
+				<input type="time" id="yAxis">
+			</div>
+			
+			<button id="saveTopic" class="save-button">Record Data</button>
+		</section>
+<!-- 		<script src="record.js"></script> -->
+	</body>
+</html>

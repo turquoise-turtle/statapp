@@ -7,7 +7,7 @@ for (var i = 0; i < 3; i++) {
 		m('section', {'class':'card'}, [
 			m('h3', 'Topic Name Here'),
 			m('section', {'class':'card-links'}, [
-				m('a', {'href':'./create.html#'}, 'Record Data'),
+				m('a', {'href':'./record.html#'}, 'Record Data'),
 				m('a', {'href':'./results.html#'}, 'View Data'),
 				m('a', {'href':'./bestoption.html#'}, 'Best Option')
 			])
