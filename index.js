@@ -37,29 +37,3 @@ m.render(root, torenderlist)
 // }
 
 // m.render(root, torenderlist);
-
-/*
-bullets = [
-		{x: 20, y:10},
-		{x:50, y:15}
-	]
-
-space(){
-	bulletlist.push({x: currentx, y:10})
-
-bullet(b) {
-	x
-	y
-	dy
-	
-	return b
-	
-}
-
-draw() {
-	for (b in bullets) {
-		y = y + dy
-		if (y == 100) 
-	}
-}
-*/
