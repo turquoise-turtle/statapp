@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		
-		<title>StatApp Best Option</title>
+		<title>StatApp Delete Topic</title>
 		<meta name="description" content="Record and analyse your own statistics">
 		
 		<meta name="robots" content="noindex,nofollow"><!-- All Search Engines -->
@@ -12,7 +12,7 @@
 		
 		<link rel="stylesheet" href="normalize.css">
 		<link rel="stylesheet" href="base.css">
-		<link rel="stylesheet" href="bestoption.css">
+		<link rel="stylesheet" href="delete.css">
 		
 		<script src="mithril.js"></script>
 		<script src="pouchdb-7.0.0.js"></script>
@@ -21,17 +21,17 @@
 	<body>
 		<h1 class="title"><a href="./index.html">StatApp</a></h1>
 		<section class="app" id="app">
-			<h2>Find the Best Option</h2>
+			<h2>Delete Topics</h2>
 			
-			<h3>All round</h3>
-			<span id="bestAllRound"></span>
+			<h3>Pick topic</h3>
+			<select id="topicList">
+				<option id="jj">JJ</option>
+			</select>
+			<button id="deleteTopic" class="save-button">Delete this topic</button>
 			
-			<h3>Based on x axis</h3>
-			<label for="xAxis">xLabel</label>
-			<input type="number" id="xAxis">
-			<button id="saveTopic" class="save-button">Calculate best option</button>
+			
 		</section>
 		
-		<script src="bestoption.js"></script>
+		<script src="delete.js"></script>
 	</body>
 </html>
