@@ -12,18 +12,25 @@
 		
 		<link rel="stylesheet" href="normalize.css">
 		<link rel="stylesheet" href="base.css">
-<!-- 		<link rel="stylesheet" href="results.css"> -->
+		<link rel="stylesheet" href="results.css">
 		
 		<script src="mithril.js"></script>
 		<script src="pouchdb-7.0.0.js"></script>
+		<script src="plotly.js" charset="utf-8"></script>
 		<script src="statapp.js"></script>
 	</head>
 	<body>
 		<h1 class="title"><a href="./index.html">StatApp</a></h1>
 		<section class="app" id="app">
+			<h2>View Results for <span id="topicName"></span></h2>
 			
+			<div id="drawHere"></div>
+			<div id="myDiv2"></div>
+			<div id="myDiv3"></div>
+			
+			<button id="bestOption" class="save-button">Best Option</button>
 		</section>
 		
-<!-- 		<script src="results.js"></script> -->
+		<script src="results.js"></script>
 	</body>
 </html>
