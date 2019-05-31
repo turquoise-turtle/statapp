@@ -23,6 +23,19 @@
 	}
 }
 
+/* Larger than mobile */
+@media (min-width: 600px) {
+	.no-topics {
+		grid-column: span 2 / auto;
+	}
+}
+/* Larger than phablet */
+@media (min-width: 900px) {
+	.no-topics {
+		grid-column: span 3 / auto;
+	}
+}
+
 .card {
 	margin: auto;
 	border: 1px solid black;
