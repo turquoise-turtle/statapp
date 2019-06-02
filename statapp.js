@@ -10,6 +10,11 @@ window.sa = (function() {
 		return Function.prototype.bind.call(console.log, console);
 	} ();
 	
+	//basically a function that calls the normal document.querySelector which returns the HTML element
+	var el = function (element) {
+		return document.querySelector(element);
+	}
+	
 	//sget is the Storage GET function that I made to make accessing the db easier
 	//it gets a parameter of the db reference, and optionally another parameter of what to get
 	var sget = function(dbref, stuff) {
@@ -66,6 +71,7 @@ window.sa = (function() {
 	//return a publicly available set of functions which are named below, which can use the private functions that aren't named
 	return {
 		l: debug,
+		el: el,
 		sget: sget,
 		sset: sset
 	}

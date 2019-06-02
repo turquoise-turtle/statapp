@@ -1,3 +1,32 @@
+//this subtopic section draws a lot of inspiration from https://www.w3schools.com/howto/howto_js_todolist.asp
+sa.el('#addCurrentSubtopic').addEventListener('click', function(event) {
+	event.preventDefault();
+	var listItem = document.createElement('li');
+	var subtopicName = sa.el('#currentSubtopic').value;
+	sa.el('#currentSubtopic').value = '';
+	var text = document.createElement('span');
+	text.innerText = subtopicName
+	text.className = 'subtopicListItem';
+	listItem.append(text);
+	if (subtopicName === '') {
+		//alert('You must write something');
+	} else {
+		sa.el('#subtopics').appendChild(listItem);
+	}
+	
+	var span = document.createElement('span');
+	var closeText = document.createTextNode('\u00D7');
+	span.className = 'close';
+	span.appendChild(closeText);
+	listItem.appendChild(span);
+	span.onclick = delete_subtopic;
+});
+function delete_subtopic(event) {
+	//this function deletes the list item element
+	var listItem = event.currentTarget.parentNode;
+	listItem.parentNode.removeChild(listItem);
+}
+
 /*
 the function below creates a Universally Unique IDentifier [UUID](http:en.wikipedia.org/wiki/Universally_unique_identifier) for each topic and was found at https:gist.github.com/jed/982883#file-annotated-js.
 
@@ -17,3 +46,35 @@ A: because I don't want the topic name to become the ID for the topic stored in 
 tl;dr I looked up "how to make a unique ID javascript", found a StackOverflow question, followed that to a GitHub Gist where this person posted their code and an annotated version which explained it, and wrote this long comment about it
 */
 function uuid(a){return a?(a^Math.random()*16>>a/4).toString(16):([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,uuid)}
+
+//run the function save_topic when the save button is clicked
+sa.el('#saveTopic').addEventListener('click', save_topic);
+function save_topic(event) {
+	event.preventDefault();
+	
+	var topicName = sa.el('#topicName').value;
+	
+	var subtopicsArray = [];
+	var subtopicList = sa.el('#subtopics');//need to loop through this
+	subtopicList.querySelectorAll('li').forEach(function (listItem) {
+		sa.l(listItem);
+		var text = listItem.querySelector('.subtopicListItem').innerText;
+		subtopicsArray.push(text);
+	});
+	
+	var xName = sa.el('#xName').value;
+	var xType = sa.el('#xType').value;
+	var xMinBool = sa.el('#xMinBool').checked;
+	var xMinValue = sa.el('#xMinValue').value;
+	
+	var yName = sa.el('#yName').value;
+	var yType = sa.el('#yType').value;
+	var yMinBool = sa.el('#yMinBool').checked;
+	var yMinValue = sa.el('#yMinValue').value;
+	
+	//the following goes through all inputs, finds which ones have the attribute name="y_better" and then picks which one is checked https://stackoverflow.com/a/15839451/
+	var yBetter = sa.el('input[name="y_better"]:checked').value;
+	
+	sa.l(topicName, subtopicList, xName, xType, xMinBool, xMinValue, yName, yType, yMinBool, yMinValue, yBetter, uuid());
+}
+
