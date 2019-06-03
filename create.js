@@ -75,6 +75,6 @@ function save_topic(event) {
 	//the following goes through all inputs, finds which ones have the attribute name="y_better" and then picks which one is checked https://stackoverflow.com/a/15839451/
 	var yBetter = sa.el('input[name="y_better"]:checked').value;
 	
-	sa.l(topicName, subtopicList, xName, xType, xMinBool, xMinValue, yName, yType, yMinBool, yMinValue, yBetter, uuid());
+	sa.l(topicName, subtopicsArray, xName, xType, xMinBool, xMinValue, yName, yType, yMinBool, yMinValue, yBetter, uuid());
 }
 

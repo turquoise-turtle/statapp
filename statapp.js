@@ -11,8 +11,12 @@ window.sa = (function() {
 	} ();
 	
 	//basically a function that calls the normal document.querySelector which returns the HTML element
-	var el = function (element) {
-		return document.querySelector(element);
+	var el = function (query) {
+		return document.querySelector(query);
+	};
+	//as well as the normal document.querySelectorAll which returns an array of HTML elements
+	var mel = function (query) {
+		return document.querySelectorAll(query);
 	}
 	
 	//sget is the Storage GET function that I made to make accessing the db easier
@@ -72,6 +76,7 @@ window.sa = (function() {
 	return {
 		l: debug,
 		el: el,
+		mel: mel,
 		sget: sget,
 		sset: sset
 	}

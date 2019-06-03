@@ -12,7 +12,7 @@ db.info().then(function (info) {
 	//this will run if there is a document called 'meta_initialised', and if there is that means the db has been initialised
 	return sa.sget(db, 'meta_topicList');
 }).then(function(doc) {
-	sa.l(doc)
+	sa.l(doc, doc.list)
 	if (doc.list.length == 0) {
 		//if there's no topics
 		basic_single_topic();
@@ -41,7 +41,7 @@ db.info().then(function (info) {
 
 
 //set root to the document which has the ID 'app'
-var root = document.querySelector('#app');
+var root = sa.el('#app');
 
 //this function will initialise the db
 function initialise_db(dbref) {
@@ -57,6 +57,8 @@ function basic_single_topic() {
 	m.render(root, m('section', {'class':'no-topics'}, [
 		m('h3', 'Huh, it looks like you don’t have any topics. Click the plus button to create one')
 	]))
+	
+	sa.el('#deleteLink').parentNode.removeChild(sa.el('#deleteLink'))
 }
 
 //this function will generate the code using the templating engine mithril.js
