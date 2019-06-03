@@ -27,6 +27,18 @@ function delete_subtopic(event) {
 	listItem.parentNode.removeChild(listItem);
 }
 
+//setup listeners on the x and y axis data type select boxes
+sa.el('#xType').addEventListener('change', function(c) {
+	switch (sa.el('#xType').value) {
+		case 'time':
+			sa.el('.xTypeNumber').classList.add('hidden');
+			break;
+		case 'number':
+			sa.el('.xTypeNumber').classList.remove('hidden');
+			break;
+	}
+});
+
 /*
 the function below creates a Universally Unique IDentifier [UUID](http:en.wikipedia.org/wiki/Universally_unique_identifier) for each topic and was found at https:gist.github.com/jed/982883#file-annotated-js.
 
@@ -50,31 +62,52 @@ function uuid(a){return a?(a^Math.random()*16>>a/4).toString(16):([1e7]+-1e3+-4e
 //run the function save_topic when the save button is clicked
 sa.el('#saveTopic').addEventListener('click', save_topic);
 function save_topic(event) {
+	//the default action is to reload the page and send the data to a server, but since I don't have a server set up for receiving this data I don't want the page to just reload so I prevent the default action
 	event.preventDefault();
 	
+	//this will validate that one of the radio buttons has been checked
+	if (sa.el('input[name="y_better"]:checked') == null) {
+		alert('hi');
+		return;
+	}
+	
 	var topicName = sa.el('#topicName').value;
+	var topicId = uuid();
 	
 	var subtopicsArray = [];
-	var subtopicList = sa.el('#subtopics');//need to loop through this
+	var subtopicList = sa.el('#subtopics');
+	//loop through the items in the list and add the name to an array
 	subtopicList.querySelectorAll('li').forEach(function (listItem) {
 		sa.l(listItem);
-		var text = listItem.querySelector('.subtopicListItem').innerText;
-		subtopicsArray.push(text);
+		var name = listItem.querySelector('.subtopicListItem').innerText;
+		subtopicsArray.push(name);
 	});
 	
 	var xName = sa.el('#xName').value;
 	var xType = sa.el('#xType').value;
 	var xMinBool = sa.el('#xMinBool').checked;
 	var xMinValue = sa.el('#xMinValue').value;
+	var xMaxBool = sa.el('#xMaxBool').checked;
+	var xMaxValue = sa.el('#xMaxValue').value;
 	
 	var yName = sa.el('#yName').value;
 	var yType = sa.el('#yType').value;
 	var yMinBool = sa.el('#yMinBool').checked;
 	var yMinValue = sa.el('#yMinValue').value;
+	var yMaxBool = sa.el('#yMaxBool').checked;
+	var yMaxValue = sa.el('#yMaxValue').value;
 	
 	//the following goes through all inputs, finds which ones have the attribute name="y_better" and then picks which one is checked https://stackoverflow.com/a/15839451/
 	var yBetter = sa.el('input[name="y_better"]:checked').value;
 	
-	sa.l(topicName, subtopicsArray, xName, xType, xMinBool, xMinValue, yName, yType, yMinBool, yMinValue, yBetter, uuid());
+	sa.l(topicName, subtopicsArray, xName, xType, xMinBool, xMinValue, yName, yType, yMinBool, yMinValue, yBetter, topicId);
+	
+	var topicObject = {
+		id: topicId,
+		name: topicName,
+		subtopics: subtopicsArray//, more
+		
+	};
+	sa.l(topicObject);
 }
 
