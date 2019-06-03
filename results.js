@@ -1,28 +1,60 @@
+//this function returns a javascript Date object, which plotly.js needs to properly use it in an axis
+//so it just initialises it to the current day, and sets the hours or minutes
+function d(h,m) {
+	return new Date(new Date().setHours(h,m,0,0));
+}
 //scatter plot example from https://plot.ly/javascript/line-and-scatter/#line-and-scatter-plot
 var trace1 = {
-  x: [1, 2, 3, 4],
-  y: [10, 15, 13, 17],
+  //OG example code: x: [1, 2, 3, 4],
+  //try 1: x: ['01:01', '02:02', '03:03', '04:04'],
+  //try 2: x: ['01:01:00', '02:02:00', '03:03:00', '04:04:00'],
+  //try 3: x: ['Mon Jun 03 2019 01:01:00 (Australian Eastern Standard Time)', 'Mon Jun 03 2019 02:02:00 (Australian Eastern Standard Time)', 'Mon Jun 03 2019 03:03:00 (Australian Eastern Standard Time)', 'Mon Jun 03 2019 04:04:00 (Australian Eastern Standard Time)'],
+  //try 4:
+  x: [d(1,1), d(2,2), d(3,3), d(4,4)],
+  //y: [10, 15, 13, 17],
+  y: [ d(4,49), d(2,32), d(1,30), d(3,38) ],
   mode: 'lines',
   type: 'scatter'
 };
 
 var trace2 = {
-  x: [2, 3, 4, 5],
-  y: [16, 5, 11, 9],
+  //x: [2, 3, 4, 5],
+  //x: ['02:20', '03:30', '04:40', '05:50'],
+  //x: ['02:20:00', '03:30:00', '04:40:00', '05:50:00'],
+  //x: ['Mon Jun 03 2019 02:20:00 (Australian Eastern Standard Time)', 'Mon Jun 03 2019 03:30:00 (Australian Eastern Standard Time)', 'Mon Jun 03 2019 04:40:00 (Australian Eastern Standard Time)', 'Mon Jun 03 2019 05:50:00 (Australian Eastern Standard Time)'],
+  x: [d(2,20), d(3,30), d(4,40), d(5,50)],
+  //y: [16, 5, 11, 9],
+  y: [d(1,30), d(2,32), d(3,38), d(4,49)],
   mode: 'lines',
   type: 'scatter'
 };
 
 var trace3 = {
-  x: [1, 2, 3, 4],
-  y: [12, 9, 15, 12],
+  //x: [1, 2, 3, 4],
+  //x: ['01:30', '02:32', '03:38', '04:49'],
+  //x: ['01:30:00', '02:32:00', '03:38:00', '04:49:00'],
+  //x: ['Mon Jun 03 2019 01:30:00 (Australian Eastern Standard Time)', 'Mon Jun 03 2019 02:32:00 (Australian Eastern Standard Time)', 'Mon Jun 03 2019 03:38:00 (Australian Eastern Standard Time)', 'Mon Jun 03 2019 04:49:00 (Australian Eastern Standard Time)'],
+  x: [d(1,30), d(2,32), d(3,38), d(4,49)],
+  //y: [12, 9, 15, 12],
+  y: [d(4,40), d(2,20),  d(5,50), d(3,30) ],
   mode: 'lines',
   type: 'scatter'
 };
 
 var data = [trace1, trace2, trace3];
+//var data = [trace1];
+var layouthere = {
+	xaxis : {
+		tickformat: '%H:%M'
+	},
+	yaxis : {
+		tickformat: '%H:%M'
+	},
+	showlegend: true
+};
+Plotly.newPlot('drawHere', data, layouthere, {displayModeBar: true, displaylogo: false, responsive: true});
 
-Plotly.newPlot('drawHere', data, {showlegend: true}, {displayModeBar: true, displaylogo: false, responsive: true});
+
 
 //bar chart example from https://plot.ly/javascript/bar-charts/#colored-and-styled-bar-chart
 var trace1 = {
