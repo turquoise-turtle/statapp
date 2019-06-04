@@ -9,7 +9,7 @@ var trace1 = {
   //try 1: x: ['01:01', '02:02', '03:03', '04:04'],
   //try 2: x: ['01:01:00', '02:02:00', '03:03:00', '04:04:00'],
   //try 3: x: ['Mon Jun 03 2019 01:01:00 (Australian Eastern Standard Time)', 'Mon Jun 03 2019 02:02:00 (Australian Eastern Standard Time)', 'Mon Jun 03 2019 03:03:00 (Australian Eastern Standard Time)', 'Mon Jun 03 2019 04:04:00 (Australian Eastern Standard Time)'],
-  //try 4:
+  //try 4: (finally works if I use a direct javascript Date object)
   x: [d(1,1), d(2,2), d(3,3), d(4,4)],
   //y: [10, 15, 13, 17],
   y: [ d(4,49), d(2,32), d(1,30), d(3,38) ],
