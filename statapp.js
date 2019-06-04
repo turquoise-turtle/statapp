@@ -19,6 +19,17 @@ window.sa = (function() {
 		return document.querySelectorAll(query);
 	}
 	
+	//why deep copy and not regular var b = a;?
+	//https://stackoverflow.com/questions/184710/what-is-the-difference-between-a-deep-copy-and-a-shallow-copy
+	//deep copy an array from https://stackoverflow.com/a/37503916/
+	Array.prototype.clone = function(){
+		return this.map(e => Array.isArray(e) ? e.clone() : e);
+	};
+	//deep copy an object found at http://jsben.ch/bWfk9
+	var objcopy = function(originalObject) {
+		return Object.assign({}, originalObject);
+	};
+	
 	//sget is the Storage GET function that I made to make accessing the db easier
 	//it gets a parameter of the db reference, and optionally another parameter of what to get
 	var sget = function(dbref, stuff) {
@@ -77,6 +88,7 @@ window.sa = (function() {
 		l: debug,
 		el: el,
 		mel: mel,
+		objcopy: objcopy,
 		sget: sget,
 		sset: sset
 	}

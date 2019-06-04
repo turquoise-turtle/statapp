@@ -56,15 +56,16 @@
 					<div class="xTypeNumber fill-two">
 						<label for="xMinBool">Minimum value? </label>
 						<input type="checkbox" id="xMinBool">
-						<input type="text" id="xMinValue">
+						<input type="number" id="xMinValue">
 				
 						<label for="xMaxBool">Maximum value? </label>
 						<input type="checkbox" id="xMaxBool">
-						<input type="text" id="xMaxValue">
+						<input type="number" id="xMaxValue">
 					</div>
 				
-					<div class="xTypeTime">
+					<div class="xTypeTime hidden">
 						<!-- add in time min/max? -->
+						<span>x time</span>
 					</div>
 				</section>
 				
@@ -85,15 +86,16 @@
 					<div class="yTypeNumber fill-two">
 						<label for="yMinBool">Minimum value? </label>
 						<input type="checkbox" id="yMinBool">
-						<input type="text" id="yMinValue">
+						<input type="number" id="yMinValue">
 				
 						<label for="yMaxBool">Maximum value? </label>
 						<input type="checkbox" id="yMaxBool">
-						<input type="text" id="yMaxValue">
+						<input type="number" id="yMaxValue">
 					</div>
 				
-					<div class="yTypeTime">
+					<div class="yTypeTime hidden">
 						<!-- add in time min/max? -->
+						<span>y Time</span>
 					</div>
 					
 					<div class="fill-two">
@@ -106,8 +108,10 @@
 				</section>
 				
 				<button id="saveTopic" class="save-button">Save Topic</button>
+				<span id="saveStatus" class="hidden">Saved New Topic, redirecting to homepage</span>
 			</form>
 		</section>
+		<button onclick="sampledata()">sample data</button>
 		
 		<script src="create.js"></script>
 	</body>
