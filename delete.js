@@ -38,7 +38,10 @@ function topic_to_option(topic) {
 
 var deleteButton = sa.el('#deleteTopic');
 deleteButton.addEventListener('click', function(event) {
-	delete_topic(sa.el('#topicList').value);
+	var confirmation = confirm('Are you sure you want to delete the topic?');
+	if (confirmation) {
+		delete_topic(sa.el('#topicList').value);
+	}
 });
 
 function delete_topic(topicId) {
