@@ -1,5 +1,5 @@
 var selectBox = sa.el('#topicList')
-var db = new PouchDB('statapp');
+var db = new PouchDB('statapp', {auto_compaction: true});
 db.info().then(function (info) {
 	sa.l(info);
 	return sa.sget(db, 'meta_initialised');

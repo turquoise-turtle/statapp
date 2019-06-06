@@ -1,7 +1,7 @@
 //for functions that start with 'sa.' see statapp.js
 
 //set up a new or existing database
-var db = new PouchDB('statapp');
+var db = new PouchDB('statapp', {auto_compaction: true});
 
 //wait till the db is open
 db.info().then(function (info) {

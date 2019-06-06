@@ -29,6 +29,10 @@
 					<option id="jj">JJ</option>
 				</select>
 				<button id="deleteTopic" class="save-button">Delete this topic</button>
+				<br>
+				<br>
+				<br>
+				<button onclick="if (confirm('Are you sure you want to delete the whole database?')) new PouchDB('statapp').destroy().then(function(){console.log('destroyed')}).catch(function(err){console.error(err)})">Delete entire database</button>
 			</div>
 			
 		</section>
