@@ -6,7 +6,7 @@ window.sa = (function() {
 	
 	//basically a function that calls the normal console.log, but lets it be used with a different name
 	//found at https://transitory.technology/console-log/
-	var debug = function () {
+	var l = function () {
 		return Function.prototype.bind.call(console.log, console);
 	} ();
 	
@@ -83,13 +83,41 @@ window.sa = (function() {
 		return dbref.put(stuff);
 	}
 	
+	hash_data = function(dbref) {
+		var hash = window.location.hash.substr(1);
+		var id = 'data_' + hash;
+		//sget(dbref, ['meta_topicList', id])
+		
+		return Promise.all([topic_metadata(dbref, hash), sget(dbref, id)])
+		//.then(function(results) {
+		//	l(results);
+		//})
+	};
+	
+	topic_metadata = function(dbref, findId) {
+		return sget(dbref, 'meta_topicList')
+		.then(function(doc) {
+			//a linear search algorithm that returns either the found topic or false
+			var list = doc.list;
+			//var found = false;
+			for (var topic of list) {
+				if (topic.id === findId) {
+					//found = true;
+					return topic;
+				}
+			}
+			return false;
+		})
+	};
+	
 	//return a publicly available set of functions which are named below, which can use the private functions that aren't named
 	return {
-		l: debug,
+		l: l,
 		el: el,
 		mel: mel,
 		objcopy: objcopy,
 		sget: sget,
-		sset: sset
+		sset: sset,
+		hash_data: hash_data
 	}
 }());
