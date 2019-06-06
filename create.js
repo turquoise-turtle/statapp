@@ -1,4 +1,4 @@
-var db = new PouchDB('statapp');
+var db = new PouchDB('statapp', {auto_compaction: true});
 
 //this subtopic section draws a lot of inspiration from https://www.w3schools.com/howto/howto_js_todolist.asp
 sa.el('#addCurrentSubtopic').addEventListener('click', function(event) {
@@ -154,8 +154,24 @@ function save_topic(event) {
 		doc.list = list;
 		//compare the pair
 		sa.l(oldDoc, doc);
+		
+		
+		var topicResults = {};
+		//it took ages to figure out that I couldn't access this document because I'd put 'id' instead of '_id'
+		topicResults['_id'] = 'data_' + topicId;
+		if (subtopicsArray.length <= 1) {
+			topicResults.data = [ [], [] ];
+		} else {
+			topicResults.data = {};
+			for (var st of subtopicsArray) {
+				topicResults.data[st] = [ [], [] ];
+			}
+		}
+		sa.l(topicResults);
+		
 		//because PouchDB needs a revision number when putting something into the db, it's easier to get that doc from the db, change it, and then put it back in one go instead of storing it somewhere on this page.
-		return sa.sset(db, doc);
+		return sa.sset(db, [doc, topicResults]);
+		
 	}).then(function(success){
 		sa.el('#saveStatus').classList.remove('hidden');
 		setTimeout(function() {
@@ -169,9 +185,9 @@ function save_topic(event) {
 
 function sampledata() {
 	sa.el('#topicName').value = 'topic name here';
-	sa.el('#xName').value = 'x';
+	sa.el('#xName').value = 'x axis name here';
 	sa.el('#xType').value = 'time';
-	sa.el('#yName').value = 'y';
+	sa.el('#yName').value = 'a y axis name goes here';
 	sa.el('#yType').value = 'number';
 	sa.el('#yMinBool').checked = true;
 	sa.el('#yMinValue').value = 0;
