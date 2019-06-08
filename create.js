@@ -159,10 +159,10 @@ function save_topic(event) {
 		var topicResults = {};
 		//it took ages to figure out that I couldn't access this document because I'd put 'id' instead of '_id'
 		topicResults['_id'] = 'data_' + topicId;
-		if (subtopicsArray.length <= 1) {
-			topicResults.data = [ [], [] ];
+		topicResults.data = {};
+		if (subtopicsArray.length == 0) {
+			topicResults.data['default'] = [ [], [] ];
 		} else {
-			topicResults.data = {};
 			for (var st of subtopicsArray) {
 				topicResults.data[st] = [ [], [] ];
 			}

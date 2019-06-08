@@ -9,6 +9,7 @@ db.info().then(function(){
 	sa.el('#yAxisLabel').innerText = doc.yName;
 	if (doc.subtopics.length <= 1) {
 		sa.el('#subtopicChoice').classList.add('hidden');
+		sa.el('#subtopicChoiceLabel').classList.add('hidden');
 	} else {
 		sa.el('#subtopicChoice').innerHTML = '';
 		doc.subtopics.map(function(individualSubtopic) {

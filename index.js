@@ -12,7 +12,8 @@ db.info().then(function (info) {
 	//this will run if there is a document called 'meta_initialised', and if there is that means the db has been initialised
 	return sa.sget(db, 'meta_topicList');
 }).then(function(doc) {
-	sa.l(doc, doc.list)
+	//sa.l(doc, doc.list)
+	sa.l(doc.list);
 	if (doc.list.length == 0) {
 		//if there's no topics
 		basic_single_topic();
