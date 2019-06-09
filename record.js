@@ -20,8 +20,39 @@ db.info().then(function(){
 		});
 	}
 	
-	var data = results[1];
+	if (doc.xType === 'time') {
+		var xInput = {
+			time: true,
+			timePattern: ['h', 'm']
+		};
+	} else {
+		var xInput = {
+			numeral: true,
+			numeralDecimalScale: 10,
+			numeralThousandsGroupStyle: 'none'
+		}
+	}
+	xAxis = new Cleave('#xAxis', xInput);
+	
+	if (doc.yType === 'time') {
+		var yInput = {
+			time: true,
+			timePattern: ['h', 'm']
+		};
+	} else {
+		var yInput = {
+			numeral: true,
+			numeralDecimalScale: 10,
+			numeralThousandsGroupStyle: 'none'
+		}
+	}
+	yAxis = new Cleave('#yAxis', yInput);
+	
+	var data = results[1].data;
+	
 	
 	
 	sa.l(doc, data);
 })
+
+var xAxis;
