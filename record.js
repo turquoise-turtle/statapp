@@ -4,6 +4,7 @@ db.info().then(function(){
 	return sa.hash_data(db)
 }).then(function(results) {
 	var doc = results[0];
+	metadata = doc;
 	sa.el('#topicName').innerText = doc.name;
 	sa.el('#xAxisLabel').innerText = doc.xName;
 	sa.el('#yAxisLabel').innerText = doc.yName;
@@ -50,9 +51,16 @@ db.info().then(function(){
 	
 	var data = results[1].data;
 	
+	sa.el('#saveData').addEventListener('click', save_the_data);
 	
 	
 	sa.l(doc, data);
 })
 
-var xAxis;
+var xAxis, yAxis, metadata;
+
+function save_the_data(e) {
+	var xValue = xAxis.getRawValue();
+	var yValue = yAxis.getRawValue();
+	//if (metadata
+}
