@@ -21,33 +21,8 @@ db.info().then(function(){
 		});
 	}
 	
-	if (doc.xType === 'time') {
-		var xInput = {
-			time: true,
-			timePattern: ['h', 'm']
-		};
-	} else {
-		var xInput = {
-			numeral: true,
-			numeralDecimalScale: 10,
-			numeralThousandsGroupStyle: 'none'
-		}
-	}
-	xAxis = new Cleave('#xAxis', xInput);
-	
-	if (doc.yType === 'time') {
-		var yInput = {
-			time: true,
-			timePattern: ['h', 'm']
-		};
-	} else {
-		var yInput = {
-			numeral: true,
-			numeralDecimalScale: 10,
-			numeralThousandsGroupStyle: 'none'
-		}
-	}
-	yAxis = new Cleave('#yAxis', yInput);
+	setup_inputs('x');
+	setup_inputs('y');
 	
 	var data = results[1].data;
 	
@@ -58,9 +33,127 @@ db.info().then(function(){
 })
 
 var xAxis, yAxis, metadata;
+var getData = {};
+
+function setup_inputs(xOrY, type) {
+	//the function goes through the user agent string, checks if it is an iOS device, and if it is it gets the iOS version number. found at https://gist.github.com/Craga89/2829457
+	var iOS = parseFloat(
+	('' + (/CPU.*OS ([0-9_]{1,5})|(CPU like).*AppleWebKit.*Mobile/i.exec(navigator.userAgent) || [0,''])[1])
+	.replace('undefined', '3_2').replace('_', '.').replace('_', '')
+) || false;
+
+	var type = metadata[xOrY + 'Type'];
+	var axis = sa.el('#' + xOrY + 'Axis');
+	if (type === 'time') {
+		axis.type = 'tel';
+		axis = new Cleave('#' + xOrY + 'Axis', {
+			time: true,
+			timePattern: ['h', 'm']
+		});
+		getData[xOrY] = function() {
+			//sa.l(axis);
+			return 't' + axis.getFormattedValue();
+		}
+	} else {
+		if (iOS === false || iOS > 12.2) {
+			axis.type = 'text';
+			axis.inputmode = 'numeric';
+			axis.pattern = '[+-]?\\d*\\.?\\d*';
+		} else {
+			axis.type = 'number'
+		}
+		getData[xOrY] = function() {
+			//sa.l(axis);
+			return 'n' + axis.value;
+		}
+	}
+}
 
 function save_the_data(e) {
-	var xValue = xAxis.getRawValue();
-	var yValue = yAxis.getRawValue();
-	//if (metadata
+	var newResults = [];
+	var xValue = getData.x();
+	var yValue = getData.y();
+	sa.l(xValue, yValue);
+	if (test_data(xValue)) {
+		if (test_data(yValue)) {
+			//good
+			notify(true);
+			real_save_data(xValue, yValue);
+		} else {
+			notify(false, 'y');
+		}
+	} else {
+		notify(false, 'x');
+	}
+}
+
+document.querySelectorAll('input').forEach(function(el){
+	el.addEventListener('focus', function(e){
+		el.scrollIntoView(false);
+	})
+});
+
+function test_data(value) {
+	if (value !== value.replace('t', '')) {
+		//time
+		if (value.replace('t', '').length < 5) {
+			//not a full time
+			return false;
+		} else {
+			//sa.l(value.replace('t', '').length)
+			//good time
+			return true;
+		}
+	} else {
+		//number
+		value = value.replace('n', '');
+		var numberRegex = /^[+-]?\d*\.?\d*$/g;
+		if (numberRegex.test(value)) {
+			//good number
+			return true;
+		} else {
+			//bad number
+			return false;
+		}
+	}
+}
+
+function notify(good, xOrY) {
+	if (!good) {
+		//not good
+		sa.l('bad values', xOrY);
+	} else {
+		sa.l('good values');
+	}
+}
+
+function real_save_data(x,y) {
+	var hash = window.location.hash.substr(1);
+	var id = 'data_' + hash;
+	return sa.sget(db, id)
+	.then(function(results) {
+		sa.l(results.data);
+		var newData = results.data;
+		//test the subtopic length
+		if (metadata.subtopics.length === 0) {
+			//default
+			newData.default[0].push(x);
+			newData.default[1].push(y);
+		} else {
+			var currentSubtopic = sa.el('#subtopicChoice').value;
+			newData[currentSubtopic][0].push(x);
+			newData[currentSubtopic][1].push(y);
+		}
+		sa.l(newData);
+		results.data = newData;
+		return sa.sset(db, results)
+	}).then(function(){
+		sa.el('#saveStatus').classList.remove('hidden');
+		setTimeout(function() {
+			sa.el('#saveStatus').classList.add('hidden');
+			setTimeout(function() {
+				location.href = './results.html#' + window.location.hash.substr(1);
+			}, 100);
+		}, 1000);
+	});
 }
