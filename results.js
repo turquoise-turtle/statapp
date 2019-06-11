@@ -144,3 +144,88 @@ var layout = {
 };
 
 Plotly.newPlot('myDiv3', data, layout, {responsive: true});
+
+
+
+var db = new PouchDB('statapp', {auto_compaction: true});
+var metadata, dataset;
+db.info().then(function(){
+	return sa.hash_data(db)
+}).then(function(results) {
+	var doc = results[0];
+	metadata = doc;
+	var data = results[1].data;
+	dataset = data;
+	
+	sa.el('#topicName').innerText = doc.name;
+	
+	sa.l(dataset);
+	
+	var graphDataset = [];
+	Object.keys(dataset).forEach(function(subtopic) {
+		sa.l(subtopic, dataset[subtopic]);
+		var currentAxisDataset = {
+			name: subtopic
+		};
+		currentAxisDataset.x = dataset_to_dataset(dataset[subtopic][0], 'x');
+		currentAxisDataset.y = dataset_to_dataset(dataset[subtopic][1], 'y');
+		
+		switch (sa.el('#graphType').value) {
+			case 'scatter':
+				currentAxisDataset.mode = 'markers'//'lines+markers';
+				currentAxisDataset.type = 'scatter';//scatter
+				break;
+		}
+		
+		graphDataset.push(currentAxisDataset);
+	});
+	sa.l(graphDataset);
+	
+	var layout = {
+		showlegend: true
+	};
+	for (var xOrY of ['x', 'y']) {
+		if (metadata[xOrY + 'Type'] === 'time') {
+			layout[xOrY + 'axis'] = {
+				tickformat: '%H:%M'
+			}
+		}
+	}
+	
+	var options = {
+		displayModeBar: true,
+		displaylogo: false,
+		responsive: true
+	}
+	
+	Plotly.newPlot('graphHere', graphDataset, layout, options);
+});
+/*
+var layouthere = {
+	xaxis : {
+		tickformat: '%H:%M'
+	},
+	yaxis : {
+		tickformat: '%H:%M'
+	},
+	showlegend: true
+};
+Plotly.newPlot('drawHere', data, layouthere, {displayModeBar: true, displaylogo: false, responsive: true});
+*/
+function dataset_to_dataset(dataArray, xOrY) {
+	var newList = [];
+	for (var el of dataArray) {
+		if (metadata[xOrY + 'Type'] === 'time') {
+			el = el.substr(1);
+			var time = el.split(':');
+			var realTime = d(time[0],time[1]);
+			newList.push(realTime);
+		} else {
+			el = el.substr(1);
+			newList.push(el);
+		}
+		//sa.l(el);
+	}
+	sa.l(newList);
+	return newList;
+}
