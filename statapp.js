@@ -29,6 +29,18 @@ window.sa = (function() {
 	var objcopy = function(originalObject) {
 		return Object.assign({}, originalObject);
 	};
+	//another deep copy implementation from https://30secondsofcode.org/object#deepclone
+	function deep_clone (obj) {
+		let clone = Object.assign({}, obj);
+		Object.keys(clone).forEach(
+			key => (clone[key] = typeof obj[key] === 'object' ? deep_clone(obj[key]) : obj[key])
+		);
+		return Array.isArray(obj) && obj.length
+			? (clone.length = obj.length) && Array.from(clone)
+			: Array.isArray(obj)
+				? Array.from(obj)
+				: clone;
+	};
 	
 	//sget is the Storage GET function that I made to make accessing the db easier
 	//it gets a parameter of the db reference, and optionally another parameter of what to get
@@ -110,14 +122,29 @@ window.sa = (function() {
 		})
 	};
 	
+	//format the values (either time or number) into a currentTest and minimumTest for the count and minimum indexes respectively
+	data_parse = function(pieceOfData) {
+		var time = /:/;
+		pieceOfData = pieceOfData.substr(1);
+		if (time.test(pieceOfData)) {
+			var piecesOfData = pieceOfData.split(':');
+			var endValue = d(piecesOfData[0], piecesOfData[1]);
+		} else {
+			var endValue = pieceOfData;
+		}
+		return endValue;
+	};
+	
 	//return a publicly available set of functions which are named below, which can use the private functions that aren't named
 	return {
 		l: l,
 		el: el,
 		mel: mel,
 		objcopy: objcopy,
+		deep_clone: deep_clone,
 		sget: sget,
 		sset: sset,
-		hash_data: hash_data
+		hash_data: hash_data,
+		data_parse: data_parse
 	}
 }());

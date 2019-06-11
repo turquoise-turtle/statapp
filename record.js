@@ -100,8 +100,7 @@ function test_data(value) {
 			//not a full time
 			return false;
 		} else {
-			//sa.l(value.replace('t', '').length)
-			//good time
+			//It's always a good time ((c) Owl City)
 			return true;
 		}
 	} else {
@@ -133,16 +132,31 @@ function real_save_data(x,y) {
 	return sa.sget(db, id)
 	.then(function(results) {
 		sa.l(results.data);
-		var newData = results.data;
+		var newData = sa.deep_clone(results.data);
 		//test the subtopic length
 		if (metadata.subtopics.length === 0) {
 			//default
 			newData.default[0].push(x);
 			newData.default[1].push(y);
+			
+			var oldX = sa.deep_clone(newData.default[0]);
+			var oldY = sa.deep_clone(newData.default[1]);
+			
+			var newXY = selection_sort(oldX, oldY);
+			newData.default[0] = newXY[0];
+			newData.default[1] = newXY[1];
+			
 		} else {
 			var currentSubtopic = sa.el('#subtopicChoice').value;
 			newData[currentSubtopic][0].push(x);
 			newData[currentSubtopic][1].push(y);
+			
+			var oldX = sa.deep_clone(newData[currentSubtopic][0]);
+			var oldY = sa.deep_clone(newData[currentSubtopic][1]);
+			
+			var newXY = selection_sort(oldX, oldY);
+			newData[currentSubtopic][0] = newXY[0];
+			newData[currentSubtopic][1] = newXY[1];
 		}
 		sa.l(newData);
 		results.data = newData;
@@ -152,8 +166,50 @@ function real_save_data(x,y) {
 		setTimeout(function() {
 			sa.el('#saveStatus').classList.add('hidden');
 			setTimeout(function() {
-				location.href = './results.html#' + window.location.hash.substr(1);
+				//location.href = './results.html#' + window.location.hash.substr(1);
+				location.reload();
 			}, 100);
 		}, 1000);
 	});
+}
+
+//greatly influenced by pages 165-66 of the textbook
+function selection_sort(xListOriginal, yListOriginal) {
+	var xList = sa.deep_clone(xListOriginal);
+	var yList = sa.deep_clone(yListOriginal);
+	
+	var time = /:/;
+	var checkLength = xList.length;
+	var pass = 0;
+	while (pass < checkLength) {
+		var count = pass + 1;
+		var minimum = pass;
+		while (count < checkLength) {
+			if (xList[count] == undefined) {
+				sa.l(checkLength, count, minimum);
+			}
+			var currentTest = sa.data_parse(xList[count]);
+			var minimumTest = sa.data_parse(xList[minimum]);
+			
+			if (currentTest < minimumTest) {
+				minimum = count;
+			}
+			count = count + 1;
+		}
+// 		swap min with pass
+		var swapTemp = [xList[minimum], yList[minimum]];
+		xList[minimum] = xList[pass];
+		yList[minimum] = yList[pass];
+		xList[pass] = swapTemp[0];
+		yList[pass] = swapTemp[1];
+		pass = pass + 1
+	}
+	sa.l(xListOriginal, yListOriginal);
+	sa.l(xList, yList);
+	return [xList, yList];
+}
+
+//see results.js
+function d(h,m) {
+	return new Date(new Date().setHours(h,m,0,0));
 }
