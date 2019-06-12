@@ -86,7 +86,7 @@ window.sa = (function() {
 	
 	//sset is the Storage SET function that I made to make putting stuff in the db easier
 	//it gets a parameter of the db reference, and what to put into the database
-	this.sset = function (dbref, stuff) {
+	var sset = function (dbref, stuff) {
 		//this time it's a simple if array use the function to bulk put elements in the db...
 		if (stuff.constructor === Array) {
 			return dbref.bulkDocs(stuff);
@@ -95,7 +95,7 @@ window.sa = (function() {
 		return dbref.put(stuff);
 	}
 	
-	hash_data = function(dbref) {
+	var hash_data = function(dbref) {
 		var hash = window.location.hash.substr(1);
 		var id = 'data_' + hash;
 		//sget(dbref, ['meta_topicList', id])
@@ -106,7 +106,7 @@ window.sa = (function() {
 		//})
 	};
 	
-	topic_metadata = function(dbref, findId) {
+	var topic_metadata = function(dbref, findId) {
 		return sget(dbref, 'meta_topicList')
 		.then(function(doc) {
 			//a linear search algorithm that returns either the found topic or false
@@ -122,14 +122,32 @@ window.sa = (function() {
 		})
 	};
 	
+	//this function returns a javascript Date object, which plotly.js needs to properly use it in an axis
+	//so it just initialises it to the current day, and sets the hours and minutes. if minutes is true, it sets the minutes and seconds
+	var d = function(one,two, minutes) {
+		minutes = minutes || false;
+		if (minutes) {
+			return new Date(new Date().setHours(0,one,two,0));
+		} else {
+			return new Date(new Date().setHours(one,two,0,0));
+		}
+	}
+	
 	//format the values (either time or number) into a currentTest and minimumTest for the count and minimum indexes respectively
 	data_parse = function(pieceOfData) {
-		var time = /:/;
-		pieceOfData = pieceOfData.substr(1);
-		if (time.test(pieceOfData)) {
+		var hour = /h/;
+		var minute = /m/;
+		//pieceOfData = pieceOfData.substr(1);
+		if (hour.test(pieceOfData)) {
+			pieceOfData = pieceOfData.substr(1);
 			var piecesOfData = pieceOfData.split(':');
 			var endValue = d(piecesOfData[0], piecesOfData[1]);
+		} else if (minute.test(pieceOfData)) {
+			pieceOfData = pieceOfData.substr(1);
+			var piecesOfData = pieceOfData.split(':');
+			var endValue = d(piecesOfData[0], piecesOfData[1], true);
 		} else {
+			pieceOfData = pieceOfData.substr(1);
 			var endValue = pieceOfData;
 		}
 		return endValue;

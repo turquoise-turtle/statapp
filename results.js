@@ -1,11 +1,3 @@
-//this function returns a javascript Date object, which plotly.js needs to properly use it in an axis
-//so it just initialises it to the current day, and sets the hours or minutes
-function d(h,m) {
-	return new Date(new Date().setHours(h,m,0,0));
-}
-
-
-
 var db = new PouchDB('statapp', {auto_compaction: true});
 var metadata, dataset;
 db.info().then(function(){
@@ -72,15 +64,13 @@ function graph_everything() {
 	
 	
 	for (var xOrY of ['x', 'y']) {
-		if (metadata[xOrY + 'Type'] === 'time') {
-			layout[xOrY + 'axis'] = {
-				tickformat: '%H:%M',
-				title: metadata[xOrY + 'Name']
-			}
-		} else {
-			layout[xOrY + 'axis'] = {
-				title: metadata[xOrY + 'Name']
-			}
+		layout[xOrY + 'axis'] = {
+			title: metadata[xOrY + 'Name']
+		}
+		if (metadata[xOrY + 'Type'] === 'hmtime') {
+			layout[xOrY + 'axis']['tickformat'] =  '%H:%M';
+		} else if (metadata[xOrY + 'Type'] === 'mstime') {
+			layout[xOrY + 'axis']['tickformat'] =  '%M:%S';
 		}
 	}
 	
@@ -96,27 +86,33 @@ function graph_everything() {
 function dataset_to_dataset(dataArray, xOrY) {
 	var newList = [];
 	for (var el of dataArray) {
-		if (metadata[xOrY + 'Type'] === 'time') {
-			el = el.substr(1);
-			var time = el.split(':');
-			//it took ages to figure out to use a direct javascript Date object, rather than strings or numbers
-			//like, here's a snippet of code from testing (that was showcased in a gif)
-			/*
-				OG example code: x: [1, 2, 3, 4],
-				try 1: x: ['01:01', '02:02', '03:03', '04:04'],
-				try 2: x: ['01:01:00', '02:02:00', '03:03:00', '04:04:00'],
-				try 3: x: ['Mon Jun 03 2019 01:01:00 (Australian Eastern Standard Time)', 'Mon Jun 03 2019 02:02:00 (Australian Eastern Standard Time)', 'Mon Jun 03 2019 03:03:00 (Australian Eastern Standard Time)', 'Mon Jun 03 2019 04:04:00 (Australian Eastern Standard Time)'],
-				try 4: (finally works if I use a direct javascript Date object, which I make with a helper function called d)
-					x: [d(1,1), d(2,2), d(3,3), d(4,4)],
-			*/
-			var realTime = d(time[0],time[1]);
-			
-			newList.push(realTime);
-		} else {
-			el = el.substr(1);
-			newList.push(el);
-		}
-		//sa.l(el);
+		//it took ages to figure out to use a direct javascript Date object, rather than strings or numbers
+		//like, here's a snippet of code from testing (that was showcased in a gif)
+		/*
+			OG example code: x: [1, 2, 3, 4],
+			try 1: x: ['01:01', '02:02', '03:03', '04:04'],
+			try 2: x: ['01:01:00', '02:02:00', '03:03:00', '04:04:00'],
+			try 3: x: ['Mon Jun 03 2019 01:01:00 (Australian Eastern Standard Time)', 'Mon Jun 03 2019 02:02:00 (Australian Eastern Standard Time)', 'Mon Jun 03 2019 03:03:00 (Australian Eastern Standard Time)', 'Mon Jun 03 2019 04:04:00 (Australian Eastern Standard Time)'],
+			try 4: (finally works if I use a direct javascript Date object, which I make with a helper function called d)
+				x: [d(1,1), d(2,2), d(3,3), d(4,4)],
+		*/
+		var realEl = sa.data_parse(el);
+		newList.push(realEl);
+		
+// 		if (metadata[xOrY + 'Type'] === 'htime' || metadata[xOrY + 'Type'] === 'mtime') {
+// 			
+// 			var realTime = sa.data_parse(el);
+// 			
+// 			//el = el.substr(1);
+// 			//var time = el.split(':');
+// 			//var realTime = d(time[0],time[1]);
+// 			
+// 			newList.push(realTime);
+// 		} else {
+// 			el = el.substr(1);
+// 			newList.push(el);
+// 		}
+// 		//sa.l(el);
 	}
 	//sa.l(newList);
 	return newList;

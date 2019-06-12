@@ -37,7 +37,11 @@ sa.el('#yType').addEventListener('change', select_type_change.bind(null, 'y'));
 function select_type_change(xOrY) {
 	//sa.l(xOrY);
 	switch (sa.el('#' + xOrY + 'Type').value) {
-		case 'time':
+		case 'mstime':
+			sa.el('.' + xOrY + 'TypeNumber').classList.add('hidden');
+			sa.el('.' + xOrY + 'TypeTime').classList.remove('hidden');
+			break;
+		case 'hmtime':
 			sa.el('.' + xOrY + 'TypeNumber').classList.add('hidden');
 			sa.el('.' + xOrY + 'TypeTime').classList.remove('hidden');
 			break;

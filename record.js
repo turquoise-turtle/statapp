@@ -44,7 +44,7 @@ function setup_inputs(xOrY, type) {
 
 	var type = metadata[xOrY + 'Type'];
 	var axis = sa.el('#' + xOrY + 'Axis');
-	if (type === 'time') {
+	if (type === 'hmtime') {
 		axis.type = 'tel';
 		axis = new Cleave('#' + xOrY + 'Axis', {
 			time: true,
@@ -52,7 +52,17 @@ function setup_inputs(xOrY, type) {
 		});
 		getData[xOrY] = function() {
 			//sa.l(axis);
-			return 't' + axis.getFormattedValue();
+			return 'h' + axis.getFormattedValue();
+		}
+	} else if (type === 'mstime') {
+		axis.type = 'tel';
+		axis = new Cleave('#' + xOrY + 'Axis', {
+			time: true,
+			timePattern: ['m', 's']
+		});
+		getData[xOrY] = function() {
+			//sa.l(axis);
+			return 'm' + axis.getFormattedValue();
 		}
 	} else {
 		if (iOS === false || iOS > 12.2) {
@@ -94,13 +104,13 @@ document.querySelectorAll('input').forEach(function(el){
 });
 
 function test_data(value) {
-	if (value !== value.replace('t', '')) {
+	if (value !== value.replace('h', '') || value !== value.replace('m', '')) {
 		//time
-		if (value.replace('t', '').length < 5) {
+		if (value.replace('h', '').length < 5 || value.replace('m', '').length < 5) {
 			//not a full time
 			return false;
 		} else {
-			//It's always a good time ((c) Owl City)
+			//"It's always a good time" ((c) Owl City)
 			return true;
 		}
 	} else {
@@ -207,9 +217,4 @@ function selection_sort(xListOriginal, yListOriginal) {
 	sa.l(xListOriginal, yListOriginal);
 	sa.l(xList, yList);
 	return [xList, yList];
-}
-
-//see results.js
-function d(h,m) {
-	return new Date(new Date().setHours(h,m,0,0));
 }
