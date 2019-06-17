@@ -149,6 +149,7 @@ window.sa = (function() {
 		} else {
 // 			l(pieceOfData);
 			pieceOfData = pieceOfData.substr(1);
+			pieceOfData = parseFloat(pieceOfData);
 			var endValue = pieceOfData;
 		}
 		return endValue;

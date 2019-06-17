@@ -55,6 +55,6 @@ function delete_topic(topicId) {
 		}
 		doc.list = list;
 		selectBox.remove(selectBox.selectedIndex);
-		return sset(db, doc);
+		return sa.sset(db, doc);
 	}).then(sa.l);
 }

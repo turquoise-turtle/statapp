@@ -190,7 +190,7 @@ function save_topic(event) {
 function sampledata() {
 	sa.el('#topicName').value = 'topic name here';
 	sa.el('#xName').value = 'x axis name here';
-	sa.el('#xType').value = 'time';
+	sa.el('#xType').value = 'hmtime';
 	sa.el('#yName').value = 'a y axis name goes here';
 	sa.el('#yType').value = 'number';
 	sa.el('#yMinBool').checked = true;
