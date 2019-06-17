@@ -54,7 +54,7 @@ function graph_everything() {
 // 				currentAxisDataset.type = 'histogram';
 // 				currentAxisDataset.histfunc = 'avg';
 // 				currentAxisDataset.x = dataset_to_dataset(dataset[subtopic][0], 'x');
-// 				currentAxisDataset.y = dataset_to_dataset(dataset[subtopic][1], 'y');
+// 				currentAxisDataset.y = dataset_to_dataset(dataset[subtopic][1], 'y', true);
 // 				break;
 		}
 		
@@ -83,7 +83,8 @@ function graph_everything() {
 	Plotly.newPlot('graphHere', graphDataset, layout, options);
 }
 
-function dataset_to_dataset(dataArray, xOrY) {
+function dataset_to_dataset(dataArray, xOrY, milliseconds) {
+	milliseconds = milliseconds || false;
 	var newList = [];
 	for (var el of dataArray) {
 		//it took ages to figure out to use a direct javascript Date object, rather than strings or numbers
@@ -97,6 +98,9 @@ function dataset_to_dataset(dataArray, xOrY) {
 				x: [d(1,1), d(2,2), d(3,3), d(4,4)],
 		*/
 		var realEl = sa.data_parse(el);
+		if (realEl instanceof Date && milliseconds) {
+			realEl = realEl.getTime();
+		}
 		newList.push(realEl);
 		
 // 		if (metadata[xOrY + 'Type'] === 'htime' || metadata[xOrY + 'Type'] === 'mtime') {

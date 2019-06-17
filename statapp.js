@@ -147,11 +147,48 @@ window.sa = (function() {
 			var piecesOfData = pieceOfData.split(':');
 			var endValue = d(piecesOfData[0], piecesOfData[1], true);
 		} else {
+// 			l(pieceOfData);
 			pieceOfData = pieceOfData.substr(1);
 			var endValue = pieceOfData;
 		}
 		return endValue;
 	};
+	
+	//greatly influenced by pages 165-66 of the textbook
+	selection_sort = function (xListOriginal, yListOriginal) {
+		var xList = deep_clone(xListOriginal);
+		var yList = deep_clone(yListOriginal);
+	
+		var time = /:/;
+		var checkLength = xList.length;
+		var pass = 0;
+		while (pass < checkLength) {
+			var count = pass + 1;
+			var minimum = pass;
+			while (count < checkLength) {
+				if (xList[count] == undefined) {
+					l(checkLength, count, minimum);
+				}
+				var currentTest = data_parse(xList[count]);
+				var minimumTest = data_parse(xList[minimum]);
+			
+				if (currentTest < minimumTest) {
+					minimum = count;
+				}
+				count = count + 1;
+			}
+	// 		swap min with pass
+			var swapTemp = [xList[minimum], yList[minimum]];
+			xList[minimum] = xList[pass];
+			yList[minimum] = yList[pass];
+			xList[pass] = swapTemp[0];
+			yList[pass] = swapTemp[1];
+			pass = pass + 1
+		}
+// 		l(xListOriginal, yListOriginal);
+// 		l(xList, yList);
+		return [xList, yList];
+	}
 	
 	//return a publicly available set of functions which are named below, which can use the private functions that aren't named
 	return {
@@ -163,6 +200,7 @@ window.sa = (function() {
 		sget: sget,
 		sset: sset,
 		hash_data: hash_data,
-		data_parse: data_parse
+		data_parse: data_parse,
+		selection_sort: selection_sort
 	}
 }());

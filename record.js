@@ -152,7 +152,7 @@ function real_save_data(x,y) {
 			var oldX = sa.deep_clone(newData.default[0]);
 			var oldY = sa.deep_clone(newData.default[1]);
 			
-			var newXY = selection_sort(oldX, oldY);
+			var newXY = sa.selection_sort(oldX, oldY);
 			newData.default[0] = newXY[0];
 			newData.default[1] = newXY[1];
 			
@@ -164,7 +164,7 @@ function real_save_data(x,y) {
 			var oldX = sa.deep_clone(newData[currentSubtopic][0]);
 			var oldY = sa.deep_clone(newData[currentSubtopic][1]);
 			
-			var newXY = selection_sort(oldX, oldY);
+			var newXY = sa.selection_sort(oldX, oldY);
 			newData[currentSubtopic][0] = newXY[0];
 			newData[currentSubtopic][1] = newXY[1];
 		}
@@ -181,40 +181,4 @@ function real_save_data(x,y) {
 			}, 100);
 		}, 1000);
 	});
-}
-
-//greatly influenced by pages 165-66 of the textbook
-function selection_sort(xListOriginal, yListOriginal) {
-	var xList = sa.deep_clone(xListOriginal);
-	var yList = sa.deep_clone(yListOriginal);
-	
-	var time = /:/;
-	var checkLength = xList.length;
-	var pass = 0;
-	while (pass < checkLength) {
-		var count = pass + 1;
-		var minimum = pass;
-		while (count < checkLength) {
-			if (xList[count] == undefined) {
-				sa.l(checkLength, count, minimum);
-			}
-			var currentTest = sa.data_parse(xList[count]);
-			var minimumTest = sa.data_parse(xList[minimum]);
-			
-			if (currentTest < minimumTest) {
-				minimum = count;
-			}
-			count = count + 1;
-		}
-// 		swap min with pass
-		var swapTemp = [xList[minimum], yList[minimum]];
-		xList[minimum] = xList[pass];
-		yList[minimum] = yList[pass];
-		xList[pass] = swapTemp[0];
-		yList[pass] = swapTemp[1];
-		pass = pass + 1
-	}
-	sa.l(xListOriginal, yListOriginal);
-	sa.l(xList, yList);
-	return [xList, yList];
 }
