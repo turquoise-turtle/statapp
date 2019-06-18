@@ -19,6 +19,7 @@ db.info().then(function(){
 
 function best_option() {
 	var graphDataset = [];
+	var joinedAxes = [];
 	var averageSet = [];
 	var bestSetIndex = false;
 	
@@ -27,6 +28,47 @@ function best_option() {
 		var currentAxisDataset = {name: subtopic};
 		currentAxisDataset.x = dataset_to_dataset(dataset[subtopic][0], 'x');
 		currentAxisDataset.y = dataset_to_dataset(dataset[subtopic][1], 'y');
+// 		sa.l(currentAxisDataset.x[0],currentAxisDataset.y[0])
+		
+		var currentAxisJoined = joined_dataset(currentAxisDataset.x, currentAxisDataset.y);
+		joinedAxes.push(currentAxisJoined);
+		
+		var linLine = regression.linear(currentAxisJoined)//, {precision: 40, order: 3})
+		var expLine = regression.exponential(currentAxisJoined)//, {precision: 40, order: 3})
+		var logLine = regression.logarithmic(currentAxisJoined)//, {precision: 40, order: 3})
+		var powLine = regression.power(currentAxisJoined)//, {precision: 40, order: 3})
+		var polyLine = regression.polynomial(currentAxisJoined)//, {precision: 40, order: 3})
+		
+		var lineArray = [linLine, expLine, logLine, powLine, polyLine];
+		
+		
+		
+		
+		var testX = currentAxisDataset.x[0]
+		var testY = currentAxisDataset.y[1]
+		sa.l(testX, testY);
+		
+// 		sa.l(linLine.predict(testX))
+// 		sa.l(expLine.predict(testX))
+// 		sa.l(logLine.predict(testX))
+// 		sa.l(powLine.predict(testX))
+// 		sa.l(polyLine.predict(testX))
+		
+		var linTest = testY - linLine.predict(testX)[1];
+		var expTest = testY - expLine.predict(testX)[1];
+		var logTest = testY - logLine.predict(testX)[1];
+		var powTest = testY - powLine.predict(testX)[1];
+		var polyTest = testY - polyLine.predict(testX)[1];
+		
+		var testArray = [linTest, expTest, logTest, powTest, polyTest];
+		testArray = testArray.map(function(testValue){
+			return Math.abs(testValue);
+		});
+		sa.l(testArray)
+		var closestTest = Math.min.apply(null, testArray);
+		sa.l(closestTest, testArray.indexOf(closestTest), lineArray[testArray.indexOf(closestTest)])
+		
+		
 		
 // 		sa.l(dataset[subtopic][1]);
 // 		sa.l(currentAxisDataset.y);
@@ -87,6 +129,7 @@ function best_option() {
 	});
 // 	sa.l(graphDataset);
 	sa.l(averageSet);
+	sa.l(joinedAxes);
 	
 	if (bestSetIndex !== false) {
 		//var bestSetIndex = 0;
@@ -108,6 +151,19 @@ function dataset_to_dataset(dataArray, xOrY) {
 	}
 	//sa.l(newList);
 	return newList;
+}
+
+//join the x and y data arrays for the regression function
+function joined_dataset(x, y) {
+	var joinedList = [];
+	for (var index = 0; index < x.length; index++) {
+		var joinedItem = [];
+		joinedItem.push(x[index]);
+		joinedItem.push(y[index]);
+		joinedList.push(joinedItem);
+// 		sa.l(joinedItem);
+	}
+	return joinedList;
 }
 
 //calculate the mean average of an array
@@ -171,7 +227,7 @@ function median_of_array(dataArray, xArray) {
 		if (mid % 1) {
 			avg = newY[mid - 0.5];
 		} else {
-			sa.l(newY[mid - 1], newY[mid]);
+// 			sa.l(newY[mid - 1], newY[mid]);
 			avg = (newY[mid - 1] + newY[mid]) / 2;
 		}
 	}
