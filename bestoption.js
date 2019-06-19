@@ -16,12 +16,13 @@ db.info().then(function(){
 	best_option();
 	
 });
-
+var linesForAxes
 function best_option() {
 	var graphDataset = [];
 	var joinedAxes = [];
 	var averageSet = [];
 	var bestSetIndex = false;
+	linesForAxes = {};
 	
 	Object.keys(dataset).forEach(function(subtopic) {
 		//sa.l(subtopic, dataset[subtopic]);
@@ -39,36 +40,88 @@ function best_option() {
 		var powLine = regression.power(currentAxisJoined)//, {precision: 40, order: 3})
 		var polyLine = regression.polynomial(currentAxisJoined)//, {precision: 40, order: 3})
 		
+		
+		
 		var lineArray = [linLine, expLine, logLine, powLine, polyLine];
+		//go through the functions for the array, and disallow any that have a 0, i.e y=0x + c will always equal c, so it's not a good approximation
+		var doNotUse = [];
+		for (var i=0; i<lineArray.length-1; i++) {
+			//sa.l(t.equation);
+			sa.l(lineArray[i].equation, lineArray[i].equation.includes(0))
+			if (lineArray[i].equation.includes(0)) {
+				doNotUse.push(i);
+			}
+		}
+		sa.l(lineArray[4].equation, lineArray[4].equation.includes(0))
+		//a two dimensional array
+		var test2dArray = [[],[],[],[],[]];
 		
+// 		sa.empty_lines()
 		
+		for (var currentTestIndex=0; currentTestIndex < 10 && currentTestIndex < currentAxisDataset.x.length; currentTestIndex++) {
+// 			sa.l(currentTestIndex)
+			var testX = currentAxisDataset.x[currentTestIndex]
+			var testY = currentAxisDataset.y[currentTestIndex]
+// 			sa.l(testX, testY);
+			
+// 			sa.l(linLine.predict(testX))
+// 			sa.l(expLine.predict(testX))
+// 			sa.l(logLine.predict(testX))
+// 			sa.l(powLine.predict(testX))
+// 			sa.l(polyLine.predict(testX))
 		
+			var linTest = linLine.predict(testX)[1];
+			var expTest = expLine.predict(testX)[1];
+			var logTest = logLine.predict(testX)[1];
+			var powTest = powLine.predict(testX)[1];
+			var polyTest = polyLine.predict(testX)[1];
+			var rawTestArray = [linTest, expTest, logTest, powTest, polyTest];
+// 			sa.l(test2dArray[2])
+			var testArray = rawTestArray.map(function(testValue, index){
+				var result = Math.abs(testY - testValue);
+				//pushes the test result for e.g. the linear model into an array with all other tests from the linear model
+				test2dArray[index].push(result);
+// 				sa.l(result, index)
+				return result;
+			});
+// 			sa.l(testArray)
+			
+			var closestTest = Math.min.apply(null, testArray);
+			var closestTestIndex = testArray.indexOf(closestTest)
+// 			sa.l(closestTest, closestTestIndex, lineArray[closestTestIndex])
+		}
 		
-		var testX = currentAxisDataset.x[0]
-		var testY = currentAxisDataset.y[1]
-		sa.l(testX, testY);
-		
-// 		sa.l(linLine.predict(testX))
-// 		sa.l(expLine.predict(testX))
-// 		sa.l(logLine.predict(testX))
-// 		sa.l(powLine.predict(testX))
-// 		sa.l(polyLine.predict(testX))
-		
-		var linTest = testY - linLine.predict(testX)[1];
-		var expTest = testY - expLine.predict(testX)[1];
-		var logTest = testY - logLine.predict(testX)[1];
-		var powTest = testY - powLine.predict(testX)[1];
-		var polyTest = testY - polyLine.predict(testX)[1];
-		
-		var testArray = [linTest, expTest, logTest, powTest, polyTest];
-		testArray = testArray.map(function(testValue){
-			return Math.abs(testValue);
+// 		sa.l(test2dArray);
+		test2dArray = test2dArray.map(function(setOfTests) {
+			return mean_of_array(setOfTests);
 		});
-		sa.l(testArray)
-		var closestTest = Math.min.apply(null, testArray);
-		sa.l(closestTest, testArray.indexOf(closestTest), lineArray[testArray.indexOf(closestTest)])
+		
+		var clTestIndex = 0;
+// 		var startIndex = clTestIndex;
+		for (var i=0; i<test2dArray.length; i++) {
+			if (test2dArray[i] < test2dArray[clTestIndex] && !doNotUse.includes(i)) {
+				clTestIndex = i;
+			}
+			if (doNotUse.includes(clTestIndex)) {
+				clTestIndex = clTestIndex + 1;
+				if (clTestIndex == test2dArray.length) {
+					clTestIndex = false;
+				}
+			}
+		}
+		
+		if (clTestIndex !== false) {
+			//var closestTest = Math.min.apply(null, test2dArray);
+			//sa.l(test2dArray, closestTest)
+			//var closestTestIndex = test2dArray.indexOf(closestTest)
+			console.warn(test2dArray[clTestIndex], clTestIndex, lineArray[clTestIndex], test2dArray[clTestIndex])
+			linesForAxes[subtopic] = lineArray[clTestIndex];
+		} else {
+			console.error('no equation');
+		}
 		
 		
+// 		sa.empty_lines()
 		
 // 		sa.l(dataset[subtopic][1]);
 // 		sa.l(currentAxisDataset.y);
@@ -187,6 +240,9 @@ function mean_of_array(dataArray, sample) {
 			var length = dataArray.length;
 		}
 		avg = sum / length;
+	}
+	if (avg == false) {
+		sa.l(dataArray)
 	}
 	return avg;
 }

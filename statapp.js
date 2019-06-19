@@ -191,6 +191,14 @@ window.sa = (function() {
 		return [xList, yList];
 	}
 	
+	empty_lines = function() {
+		sa.l('')
+		sa.l('')
+		sa.l('')
+		sa.l('')
+		sa.l('')
+	}
+	
 	//return a publicly available set of functions which are named below, which can use the private functions that aren't named
 	return {
 		l: l,
@@ -202,6 +210,7 @@ window.sa = (function() {
 		sset: sset,
 		hash_data: hash_data,
 		data_parse: data_parse,
-		selection_sort: selection_sort
+		selection_sort: selection_sort,
+		empty_lines: empty_lines
 	}
 }());
