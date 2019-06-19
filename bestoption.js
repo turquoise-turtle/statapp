@@ -1,5 +1,12 @@
-var db = new PouchDB('statapp', {auto_compaction: true});
+//global variables
+var graphDataset = [];
+var joinedAxes = [];
+var averageSet = [];
+var bestSetIndex = false;
+var linesForAxes = {};
 var metadata, dataset;
+
+var db = new PouchDB('statapp', {auto_compaction: true});
 db.info().then(function(){
 	return sa.hash_data(db)
 }).then(function(results) {
@@ -16,47 +23,28 @@ db.info().then(function(){
 	best_option();
 	
 });
-var linesForAxes
+
 function best_option() {
-	var graphDataset = [];
-	var joinedAxes = [];
-	var averageSet = [];
-	var bestSetIndex = false;
-	linesForAxes = {};
+	
 	
 	Object.keys(dataset).forEach(function(subtopic) {
-		//sa.l(subtopic, dataset[subtopic]);
-		var currentAxisDataset = {name: subtopic};
-		currentAxisDataset.x = dataset_to_dataset(dataset[subtopic][0], 'x');
-		currentAxisDataset.y = dataset_to_dataset(dataset[subtopic][1], 'y');
-// 		sa.l(currentAxisDataset.x[0],currentAxisDataset.y[0])
-		
-		var currentAxisJoined = joined_dataset(currentAxisDataset.x, currentAxisDataset.y);
-		joinedAxes.push(currentAxisJoined);
-		
-		var linLine = regression.linear(currentAxisJoined)//, {precision: 40, order: 3})
-		var expLine = regression.exponential(currentAxisJoined)//, {precision: 40, order: 3})
-		var logLine = regression.logarithmic(currentAxisJoined)//, {precision: 40, order: 3})
-		var powLine = regression.power(currentAxisJoined)//, {precision: 40, order: 3})
-		var polyLine = regression.polynomial(currentAxisJoined)//, {precision: 40, order: 3})
+		//process_subtopic is being written in a.js
+		//generate_tests will be written
+		//generate averages will be written
 		
 		
 		
-		var lineArray = [linLine, expLine, logLine, powLine, polyLine];
-		//go through the functions for the array, and disallow any that have a 0, i.e y=0x + c will always equal c, so it's not a good approximation
-		var doNotUse = [];
-		for (var i=0; i<lineArray.length-1; i++) {
-			//sa.l(t.equation);
-			sa.l(lineArray[i].equation, lineArray[i].equation.includes(0))
-			if (lineArray[i].equation.includes(0)) {
-				doNotUse.push(i);
-			}
-		}
-		sa.l(lineArray[4].equation, lineArray[4].equation.includes(0))
-		//a two dimensional array
-		var test2dArray = [[],[],[],[],[]];
 		
-// 		sa.empty_lines()
+		
+		
+		
+		
+		
+		
+		
+		
+		
+// 		
 		
 		for (var currentTestIndex=0; currentTestIndex < 10 && currentTestIndex < currentAxisDataset.x.length; currentTestIndex++) {
 // 			sa.l(currentTestIndex)
@@ -78,29 +66,39 @@ function best_option() {
 			var rawTestArray = [linTest, expTest, logTest, powTest, polyTest];
 // 			sa.l(test2dArray[2])
 			var testArray = rawTestArray.map(function(testValue, index){
-				var result = Math.abs(testY - testValue);
-				//pushes the test result for e.g. the linear model into an array with all other tests from the linear model
-				test2dArray[index].push(result);
-// 				sa.l(result, index)
-				return result;
+				if (isNaN(testValue)) {
+					sa.l(index);
+					test2dArray[index].push(false);
+					return false;
+				} else {
+					var result = Math.abs(testY - testValue);
+					//pushes the test result for e.g. the linear model into an array with all other tests from the linear model
+					test2dArray[index].push(result);
+	// 				sa.l(result, index)
+					return result;
+				}
 			});
-// 			sa.l(testArray)
+			sa.l(testArray)
+			sa.l(sa.only_numbers(testArray))
 			
-			var closestTest = Math.min.apply(null, testArray);
-			var closestTestIndex = testArray.indexOf(closestTest)
+// 			var closestTest = Math.min.apply(null, testArray);
+// 			var closestTestIndex = testArray.indexOf(closestTest)
 // 			sa.l(closestTest, closestTestIndex, lineArray[closestTestIndex])
 		}
 		
-// 		sa.l(test2dArray);
+		sa.l(test2dArray);
 		test2dArray = test2dArray.map(function(setOfTests) {
 			return mean_of_array(setOfTests);
 		});
+		sa.l(test2dArray)
 		
 		var clTestIndex = 0;
+		var cl = false;
 // 		var startIndex = clTestIndex;
 		for (var i=0; i<test2dArray.length; i++) {
 			if (test2dArray[i] < test2dArray[clTestIndex] && !doNotUse.includes(i)) {
 				clTestIndex = i;
+				cl = true;
 			}
 			if (doNotUse.includes(clTestIndex)) {
 				clTestIndex = clTestIndex + 1;
@@ -161,7 +159,7 @@ function best_option() {
 			fSigma: newSigma
 		};
 		averageSet.push(currentAverageSet);
-		graphDataset.push(currentAxisDataset);
+		
 		
 		if (bestSetIndex === false) {
 			bestSetIndex = averageSet.length - 1;

@@ -199,6 +199,11 @@ window.sa = (function() {
 		sa.l('')
 	}
 	
+	//filters an array to have only numeric items. found at https://gist.github.com/Daniel-Hug/7273430#gistcomment-2803938
+	only_numbers = function(array) {
+		return array.filter(el => !isNaN(parseFloat(el)) && isFinite(el) );
+	}
+	
 	//return a publicly available set of functions which are named below, which can use the private functions that aren't named
 	return {
 		l: l,
@@ -211,6 +216,7 @@ window.sa = (function() {
 		hash_data: hash_data,
 		data_parse: data_parse,
 		selection_sort: selection_sort,
-		empty_lines: empty_lines
+		empty_lines: empty_lines,
+		only_numbers: only_numbers
 	}
 }());
