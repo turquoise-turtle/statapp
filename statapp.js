@@ -59,8 +59,8 @@ window.sa = (function() {
 			//debug('array')
 			var list = [];
 			var description = {};
-			//loop through every item in the array. a 'for ... in' loop sets 'item' to be the value of the index of the current element, whereas a 'for ... of' loop would set 'item' to be the current element
-			for (var item in stuff) {
+			//loop through every item in the array
+			for (var item=0; item < stuff.length; item++) {
 				//right now, 'list.push(dbref...' is pushing the function call 'dbref.get(...' into the array 'list'. in other words, it runs 'dbref.get(...' but because it is an asynchronous function you don't know when it will finish, so we append/push it to a list to keep track of it / to put the results into a list
 				list.push(dbref.get(stuff[item]));
 				//this adds a property to an object with the key being the name and the value being the index
@@ -192,11 +192,10 @@ window.sa = (function() {
 	}
 	
 	empty_lines = function() {
-		sa.l('')
-		sa.l('')
-		sa.l('')
-		sa.l('')
-		sa.l('')
+		amount = amount || 5;
+		for (var i=0; i < amount; i++) {
+			l('')
+		}
 	}
 	
 	//filters an array to have only numeric items. found at https://gist.github.com/Daniel-Hug/7273430#gistcomment-2803938
