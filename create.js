@@ -39,14 +39,14 @@ function select_type_change(xOrY) {
 	switch (sa.el('#' + xOrY + 'Type').value) {
 		case 'mstime':
 			sa.el('.' + xOrY + 'TypeNumber').classList.add('hidden');
-			sa.el('.' + xOrY + 'TypeTime').classList.remove('hidden');
+// 			sa.el('.' + xOrY + 'TypeTime').classList.remove('hidden');
 			break;
 		case 'hmtime':
 			sa.el('.' + xOrY + 'TypeNumber').classList.add('hidden');
-			sa.el('.' + xOrY + 'TypeTime').classList.remove('hidden');
+// 			sa.el('.' + xOrY + 'TypeTime').classList.remove('hidden');
 			break;
 		case 'number':
-			sa.el('.' + xOrY + 'TypeNumber').classList.remove('hidden');
+// 			sa.el('.' + xOrY + 'TypeNumber').classList.remove('hidden');
 			sa.el('.' + xOrY + 'TypeTime').classList.add('hidden');
 			break;
 	}

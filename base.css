@@ -33,6 +33,10 @@ a:visited {
 .save-button {
 	margin-top: 1rem;
 }
+button {
+	cursor: pointer;
+}
+
 /* form styles from https://github.com/csstools/sanitize.css/blob/master/forms.css */
 button, input, select, textarea {
 	/*background-color: transparent;*/
@@ -48,6 +52,10 @@ select {
 	/*background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='4'%3E%3Cpath d='M4 0h6L7 4'/%3E%3C/svg%3E") no-repeat right center / 1em;*/
 	/*border-radius: 0;*/
 	/*padding-right: 1em;*/
+}
+
+input:invalid {
+	background-color: red;
 }
 
 /* */
