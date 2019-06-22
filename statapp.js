@@ -191,7 +191,7 @@ window.sa = (function() {
 		return [xList, yList];
 	}
 	
-	empty_lines = function() {
+	empty_lines = function(amount) {
 		amount = amount || 5;
 		for (var i=0; i < amount; i++) {
 			l('')
@@ -201,6 +201,58 @@ window.sa = (function() {
 	//filters an array to have only numeric items. found at https://gist.github.com/Daniel-Hug/7273430#gistcomment-2803938
 	only_numbers = function(array) {
 		return array.filter(el => !isNaN(parseFloat(el)) && isFinite(el) );
+	}
+	
+	
+	test_data = function(value) {
+		if (value !== value.replace('h', '') || value !== value.replace('m', '')) {
+			//time
+			if (value.replace('h', '').length < 5 || value.replace('m', '').length < 5) {
+				//not a full time
+				return false;
+			} else {
+				//"It's always a good time" ((c) Owl City)
+				return true;
+			}
+		} else {
+			//number
+			value = value.replace('n', '');
+			var numberRegex = /^[+-]?\d*\.?\d*$/g;
+			if (numberRegex.test(value)) {
+				//good number
+				return true;
+			} else {
+				//bad number
+				return false;
+			}
+		}
+	}
+	
+	date_to_form = function(time, seconds) {
+		if (!(time instanceof Date)) {
+			time = new Date(time);
+		}
+		seconds = seconds || false;
+		if (seconds) {
+			var form = time.getMinutes() + ':';
+			/*the following is a ternary operator. it basically turns
+				var x = condition ? someValue : anotherValue
+			into
+				if (condition) {
+					var x = someValue;
+				} else {
+					var x = anotherValue;
+				}
+			*/
+			//I use it because otherwise time.getSeconds() could return 3, and you don't write one minute and three seconds 1:3, so I have to pad the string with a 0 to get 1:03 for example
+			var smaller = time.getSeconds() < 10 ? '0' + '' +  time.getSeconds() : time.getSeconds();
+			form = form + smaller;
+		} else {
+			var form = time.getHours() + ':';
+			var smaller = time.getMinutes() < 10 ? '0' + '' +  time.getMinutes() : time.getMinutes()
+			form = form + smaller;
+		}
+		return form;
 	}
 	
 	//return a publicly available set of functions which are named below, which can use the private functions that aren't named
@@ -216,6 +268,8 @@ window.sa = (function() {
 		data_parse: data_parse,
 		selection_sort: selection_sort,
 		empty_lines: empty_lines,
-		only_numbers: only_numbers
+		only_numbers: only_numbers,
+		test_data: test_data,
+		date_to_form: date_to_form
 	}
 }());

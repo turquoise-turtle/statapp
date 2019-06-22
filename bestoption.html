@@ -16,6 +16,7 @@
 		
 		<script src="mithril.js"></script>
 		<script src="pouchdb-7.0.0.js"></script>
+		<script src="cleave.js"></script>
 		<script src="regression.js"></script>
 		<script src="statapp.js"></script>
 	</head>
@@ -24,16 +25,23 @@
 		<section class="app" id="app">
 			<h2>Find the Best Option <span id="topicName"></span></h2>
 			
-			<h3>All round best is <span id="bestAllRound"></span></h3>
+			<div>
+				<h4 id="allRound">All round best is <span id="bestAllRound"></span></h4>
+			</div>
 			
 			
-			
-			<h3>Based on x axis</h3>
-			<label for="xAxis">xLabel</label>
-			<input type="number" id="xAxis">
-			<button id="calculateBest" class="save-button">Calculate best option</button>
+			<div id="computation">
+				<h4 class="predictTitle">Predict a Value</h5>
+				<div>
+					<label for="xAxis" id="xAxisLabel">xLabel</label>
+					<input type="number" id="xAxis">
+					<button id="calculateBest" class="save-button">Calculate best option</button>
+					<h4 id="theBest"></h4>
+				</div>
+			</div>
 		</section>
 		
 		<script src="bestoption.js"></script>
+		<script src="a.js"></script>
 	</body>
 </html>

@@ -1,10 +1,12 @@
 //global variables
 var graphDataset = [];
 var joinedAxes = [];
-var averageSet = [];
+var averageSet = {};
 var bestSetIndex = false;
 var linesForAxes = {};
 var metadata, dataset;
+var atLeastOne = false;
+var getData = {};
 
 var db = new PouchDB('statapp', {auto_compaction: true});
 db.info().then(function(){
@@ -17,6 +19,7 @@ db.info().then(function(){
 	dataset = data;
 	
 	sa.el('#topicName').innerText = doc.name;
+	sa.el('#xAxisLabel').innerText = doc.xName;
 	
 	//sa.l(dataset);
 	
@@ -25,168 +28,40 @@ db.info().then(function(){
 });
 
 function best_option() {
-	
-	
 	Object.keys(dataset).forEach(function(subtopic) {
 		//process_subtopic is being written in a.js
+		process_subtopic(subtopic);
 		//generate_tests will be written
-		//generate averages will be written
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-// 		
-		
-		for (var currentTestIndex=0; currentTestIndex < 10 && currentTestIndex < currentAxisDataset.x.length; currentTestIndex++) {
-// 			sa.l(currentTestIndex)
-			var testX = currentAxisDataset.x[currentTestIndex]
-			var testY = currentAxisDataset.y[currentTestIndex]
-// 			sa.l(testX, testY);
-			
-// 			sa.l(linLine.predict(testX))
-// 			sa.l(expLine.predict(testX))
-// 			sa.l(logLine.predict(testX))
-// 			sa.l(powLine.predict(testX))
-// 			sa.l(polyLine.predict(testX))
-		
-			var linTest = linLine.predict(testX)[1];
-			var expTest = expLine.predict(testX)[1];
-			var logTest = logLine.predict(testX)[1];
-			var powTest = powLine.predict(testX)[1];
-			var polyTest = polyLine.predict(testX)[1];
-			var rawTestArray = [linTest, expTest, logTest, powTest, polyTest];
-// 			sa.l(test2dArray[2])
-			var testArray = rawTestArray.map(function(testValue, index){
-				if (isNaN(testValue)) {
-					sa.l(index);
-					test2dArray[index].push(false);
-					return false;
-				} else {
-					var result = Math.abs(testY - testValue);
-					//pushes the test result for e.g. the linear model into an array with all other tests from the linear model
-					test2dArray[index].push(result);
-	// 				sa.l(result, index)
-					return result;
-				}
-			});
-			sa.l(testArray)
-			sa.l(sa.only_numbers(testArray))
-			
-// 			var closestTest = Math.min.apply(null, testArray);
-// 			var closestTestIndex = testArray.indexOf(closestTest)
-// 			sa.l(closestTest, closestTestIndex, lineArray[closestTestIndex])
-		}
-		
-		sa.l(test2dArray);
-		test2dArray = test2dArray.map(function(setOfTests) {
-			return mean_of_array(setOfTests);
-		});
-		sa.l(test2dArray)
-		
-		var clTestIndex = 0;
-		var cl = false;
-// 		var startIndex = clTestIndex;
-		for (var i=0; i<test2dArray.length; i++) {
-			if (test2dArray[i] < test2dArray[clTestIndex] && !doNotUse.includes(i)) {
-				clTestIndex = i;
-				cl = true;
-			}
-			if (doNotUse.includes(clTestIndex)) {
-				clTestIndex = clTestIndex + 1;
-				if (clTestIndex == test2dArray.length) {
-					clTestIndex = false;
-				}
-			}
-		}
-		
-		if (clTestIndex !== false) {
-			//var closestTest = Math.min.apply(null, test2dArray);
-			//sa.l(test2dArray, closestTest)
-			//var closestTestIndex = test2dArray.indexOf(closestTest)
-			console.warn(test2dArray[clTestIndex], clTestIndex, lineArray[clTestIndex], test2dArray[clTestIndex])
-			linesForAxes[subtopic] = lineArray[clTestIndex];
-		} else {
-			console.error('no equation');
-		}
-		
-		
-// 		sa.empty_lines()
-		
-// 		sa.l(dataset[subtopic][1]);
-// 		sa.l(currentAxisDataset.y);
-		
-		var mean = mean_of_array(currentAxisDataset.y);
-		var mode = mode_of_array(currentAxisDataset.y);
-		var median = median_of_array(dataset[subtopic][1], dataset[subtopic][0]);
-		var sigma = standard_deviation(currentAxisDataset.y);
-		
-		
-		if (metadata['yType'] == 'hmtime') {
-			newMean = [new Date(mean).getHours(), new Date(mean).getMinutes()];
-			newMode = [new Date(mode).getHours(), new Date(mode).getMinutes()];
-			newMedian = [new Date(median).getHours(), new Date(median).getMinutes()];
-			newSigma = [new Date(sigma).getHours(), new Date(sigma).getMinutes()];
-		} else if  (metadata['yType'] == 'mstime') {
-			newMean = [new Date(mean).getMinutes(), new Date(mean).getSeconds()];
-			newMode = [new Date(mode).getMinutes(), new Date(mode).getSeconds()];
-			newMedian = [new Date(median).getMinutes(), new Date(median).getSeconds()];
-			newSigma = [new Date(sigma).getMinutes(), new Date(sigma).getSeconds()];
-		} else {
-			newMean = mean;
-			newMode = mode;
-			newMedian = median;
-			newSigma = sigma;
-		}
-		sa.l('mean', newMean);
-		sa.l('mode', newMode);
-		sa.l('median', newMedian);
-		sa.l('sigma sample', newSigma);
-		
-		var currentAverageSet = {
-			name: subtopic,
-			mean: mean,
-			fMean: newMean,
-			sigma: sigma,
-			fSigma: newSigma
-		};
-		averageSet.push(currentAverageSet);
-		
-		
-		if (bestSetIndex === false) {
-			bestSetIndex = averageSet.length - 1;
-			sa.l('first "better" option');
-		} else if (metadata['yBetter'] == 'higher') {
-			if (mean > averageSet[bestSetIndex]['mean']) {
-				bestSetIndex = averageSet.length - 1;
-				sa.l(newMean + ' is better');
-			}
-		} else {
-			if (mean < averageSet[bestSetIndex]['mean']) {
-				bestSetIndex = averageSet.length - 1;
-				sa.l(newMean + ' is better');
-			}
-		}
-		
-		sa.l('')
+		//generate_averages will be written
+		sa.l(linesForAxes)
+
 	});
-// 	sa.l(graphDataset);
-	sa.l(averageSet);
-	sa.l(joinedAxes);
 	
+// 	sa.l(graphDataset);
+// 	sa.l(averageSet);
+// 	sa.l(joinedAxes);
+	
+	//display the best value
 	if (bestSetIndex !== false) {
 		//var bestSetIndex = 0;
 		//for (var avgSet 
-		sa.l('there is a best option')
-		sa.el('#bestAllRound').innerText = averageSet[bestSetIndex]['name'];
+		sa.l('there is a best option which is')
+		sa.l(averageSet[bestSetIndex])
+		var formattedMean = averageSet[bestSetIndex]['fMean'];
+		var formattedSigma = averageSet[bestSetIndex]['fSigma'];
+		//the \xB1 is a plus or minus sign ±
+		sa.el('#bestAllRound').innerText = averageSet[bestSetIndex]['name'] + ' with ' + formattedMean + ' \xB1 ' + formattedSigma;
+	} else {
+		sa.el('#allRound').innerHTML = 'It looks like there\'s no data for this topic. Go to the <a href="./record.html#' + window.location.hash.substr(1) + '" class="save-button">Record Data</a> screen to enter some data';
+	}
+	
+	if (atLeastOne) {
+		//there is at least one model
+		setup_input();
+		sa.el('#calculateBest').addEventListener('click', check_the_data);
+	} else {
+		//there are no models
+		sa.el('#computation').classList.add('hidden');
 	}
 }
 
@@ -216,6 +91,338 @@ function joined_dataset(x, y) {
 	}
 	return joinedList;
 }
+
+
+function process_subtopic(subtopic) {
+	//sa.l(subtopic, dataset[subtopic]);
+	
+	//set up the current axis/subtopic dataset in separate arrays for the x and y values
+	var currentAxisDataset = {name: subtopic};
+	currentAxisDataset.x = dataset_to_dataset(dataset[subtopic][0], 'x');
+	currentAxisDataset.y = dataset_to_dataset(dataset[subtopic][1], 'y');
+	//store the dataset for the current subtopic in the global array of datasets
+	graphDataset.push(currentAxisDataset);
+// 	sa.l(currentAxisDataset.x[0],currentAxisDataset.y[0])
+	
+	//only go through and make/test models if there are enough datapoints
+	if (currentAxisDataset.x.length > 1) {
+		//set up the data in the current subtopic in an array of individual [x,y] arrays using the joined_dataset function
+		var currentAxisJoined = joined_dataset(currentAxisDataset.x, currentAxisDataset.y);
+		joinedAxes.push(currentAxisJoined);
+	
+		//generate the models using the library regression.js
+		var linLine = regression.linear(currentAxisJoined)//, {precision: 40, order: 3})
+		var expLine = regression.exponential(currentAxisJoined)//, {precision: 40, order: 3})
+		var logLine = regression.logarithmic(currentAxisJoined)//, {precision: 40, order: 3})
+		var powLine = regression.power(currentAxisJoined)//, {precision: 40, order: 3})
+		var polyLine = regression.polynomial(currentAxisJoined)//, {precision: 40, order: 3})
+		//put them all in one array of models
+		var lineArray = [linLine, expLine, logLine, powLine, polyLine];
+	
+		//go through the models and disallow any that have a 0 as a coefficient, i.e y=0x + c will always equal c, so it's not a good approximation
+		//or Infinity, or NaN (not a number)
+		var doNotUse = [];
+		if (linLine.equation[0] == 0 || linLine.equation[0] == Infinity || isNaN(linLine.equation[0])) {
+			doNotUse.push(0);
+		}
+		if (expLine.equation.includes(0) || expLine.equation.includes(Infinity) || check_array_nan(expLine.equation)) {
+			doNotUse.push(1);
+		}
+		if (logLine.equation[1] == 0 || logLine.equation[1] == Infinity || isNaN(logLine.equation[1])) {
+			doNotUse.push(2);
+		}
+		if (powLine.equation.includes(0) || powLine.equation.includes(Infinity) || check_array_nan(powLine.equation)) {
+			doNotUse.push(3);
+		}
+		//except the polynomial model, because that can have a y=0x^2 + 0.2x + c and still be valid
+// 		sa.l(lineArray[4].equation, lineArray[4].equation.includes(0))
+	
+	
+	
+		//sa.empty_lines()
+		
+		//go through and do all the test
+		var subtopicHasModel = generate_tests(subtopic, currentAxisDataset, lineArray, doNotUse);
+	
+		if (subtopicHasModel[0]) {
+			//set that there is at least one subtopic with a working model
+			atLeastOne = true;
+		} else {
+			//?
+		}
+	}
+	if (currentAxisDataset.x.length > 0) {
+		sa.empty_lines()
+		/*
+			generate the averages
+		*/
+		
+// 		sa.l(dataset[subtopic][1]);
+// 		sa.l(currentAxisDataset.y);
+		
+		var mean = mean_of_array(currentAxisDataset.y);
+		var mode = mode_of_array(currentAxisDataset.y);
+		var median = median_of_array(dataset[subtopic][1], dataset[subtopic][0]);
+		var sigma = standard_deviation(currentAxisDataset.y);
+		var newMean, newMode, newMedian, newSigma;
+		
+		if (metadata['yType'] == 'hmtime') {
+			newMean = new Date(mean).getHours() + ':' + new Date(mean).getMinutes();
+			newMode = new Date(mode).getHours() + ':' + new Date(mode).getMinutes();
+			newMedian = new Date(median).getHours() + ':' + new Date(median).getMinutes();
+			newSigma = new Date(sigma).getHours() + ':' + new Date(sigma).getMinutes();
+		} else if  (metadata['yType'] == 'mstime') {
+			newMean = new Date(mean).getMinutes() + ':' + new Date(mean).getSeconds();
+			newMode = new Date(mode).getMinutes() + ':' + new Date(mode).getSeconds();
+			newMedian = new Date(median).getMinutes() + ':' + new Date(median).getSeconds();
+			newSigma = new Date(sigma).getMinutes() + ':' + new Date(sigma).getSeconds();
+		} else {
+			newMean = mean;
+			newMode = mode;
+			newMedian = median;
+			newSigma = sigma;
+		}
+		sa.l('mean', newMean);
+		sa.l('mode', newMode);
+		sa.l('median', newMedian);
+		sa.l('sigma sample', newSigma);
+		
+		var currentAverageSet = {
+			name: subtopic,
+			mean: mean,
+			fMean: newMean,
+			sigma: sigma,
+			fSigma: newSigma
+		};
+		averageSet[subtopic] = currentAverageSet;
+		
+		if (bestSetIndex === false) {
+			bestSetIndex = subtopic;
+			sa.l('first "better" option');
+		} else if (metadata['yBetter'] == 'higher') {
+			if (mean > averageSet[bestSetIndex]['mean']) {
+				bestSetIndex = subtopic;
+				sa.l(newMean + ' is better');
+			}
+		} else {
+			if (mean < averageSet[bestSetIndex]['mean']) {
+				bestSetIndex = subtopic;
+				sa.l(newMean + ' is better');
+			}
+		}
+		
+		sa.l('')
+	}
+}
+
+function generate_tests(subtopicName, subtopicDataset, models, doNotUse, maxTests) {
+	//the default maximum number of tests is 10
+	maxTests = maxTests || 10;
+	//a two dimensional array which stores all the results from the tests on each of the five models
+	var test2dArray = [[],[],[],[],[]];
+	
+	//run these tests on maxTests number of variables
+	for (var currentTestIndex=0; currentTestIndex < maxTests && currentTestIndex < subtopicDataset.x.length; currentTestIndex++) {
+// 		sa.l(currentTestIndex)
+		var testX = subtopicDataset.x[currentTestIndex]
+		var testY = subtopicDataset.y[currentTestIndex]
+// 		sa.l(testX, testY);
+		
+		//generate a list of expected y values for a given x value
+		//.predict(x) returns an array of [x,y], so we get the y value
+		var linTest = models[0].predict(testX)[1];
+		var expTest = models[1].predict(testX)[1];
+		var logTest = models[2].predict(testX)[1];
+		var powTest = models[3].predict(testX)[1];
+		var polyTest = models[4].predict(testX)[1];
+		var rawTestArray = [linTest, expTest, logTest, powTest, polyTest];
+		
+		//loop over every expected y value in the rawTestArray list
+		var testArray = rawTestArray.map(function(testValue, index){
+			if (isNaN(testValue)) {
+				sa.l(index);
+				//if the expected y value is Not a Number (NaN), then add false to the array instead
+				test2dArray[index].push(false);
+				return false;
+			} else {
+				//get the absolute |y| value of the difference between the expected y value and the actual y value
+				var result = Math.abs(testY - testValue);
+				//pushes the test result for e.g. the linear model into an array with all other tests from the linear model
+				test2dArray[index].push(result);
+// 				sa.l(result, index)
+				return result;
+			}
+		});
+// 		sa.l(testArray)
+// 		sa.l(sa.only_numbers(testArray))
+	}
+	
+	sa.l(test2dArray);
+	
+	//flatten the two dimensional array by replacing the 2nd dimension with an average of the results contained within it
+	test2dArray = test2dArray.map(function(setOfTests) {
+		return mean_of_array(setOfTests);
+	});
+	sa.l(test2dArray)
+	
+	//loop through the now flattened array to find the smallest average difference of the models, but ignore any models that were added to the doNotUse exclusion list
+	var closestTestIndex = 0;
+	var closestExists = false;
+	for (var i=0; i < test2dArray.length; i++) {
+		//doNotUse.includes will return a Boolean, the ! switches it to the other Boolean, i.e. !false == true
+		//the other part of the if statement checks whether the value with index i is less than the current smallest value with index closestTestIndex, OR if index 0 is a valid model then it will initialise it as the smallest
+		if (!doNotUse.includes(i) && (test2dArray[i] < test2dArray[closestTestIndex] || i == 0) ) {
+			closestTestIndex = i;
+			closestExists = true;
+		}
+		//this will initially check whether model 0 should be excluded, and increment the index so that model 1 will be compared next
+		if (doNotUse.includes(closestTestIndex)) {
+			closestTestIndex = closestTestIndex + 1;
+			//but if all the models are excluded then the index will equal the length of the array, so we change it to false and will handle it later
+			if (closestTestIndex == test2dArray.length) {
+				closestTestIndex = false;
+			}
+		}
+	}
+	
+	
+	var returnValue;
+	
+	if (closestTestIndex !== false) {
+		console.warn(test2dArray[closestTestIndex], closestTestIndex, models[closestTestIndex], test2dArray[closestTestIndex])
+		linesForAxes[subtopicName] = models[closestTestIndex];
+		
+		returnValue = [true, closestTestIndex];
+	} else {
+		console.error('no equation');
+		
+		returnValue = [false];
+	}
+	
+	return returnValue;
+}
+
+//setup the input as in the record data screen
+function setup_input() {
+	//the function goes through the user agent string, checks if it is an iOS device, and if it is it gets the iOS version number. found at https://gist.github.com/Craga89/2829457
+	var iOS = parseFloat(
+	('' + (/CPU.*OS ([0-9_]{1,5})|(CPU like).*AppleWebKit.*Mobile/i.exec(navigator.userAgent) || [0,''])[1])
+	.replace('undefined', '3_2').replace('_', '.').replace('_', '')
+) || false;
+
+	var type = metadata['xType'];
+	var axis = sa.el('#xAxis');
+	if (type === 'hmtime') {
+		axis.type = 'tel';
+		axis = new Cleave('#xAxis', {
+			time: true,
+			timePattern: ['h', 'm']
+		});
+		getData['x'] = function() {
+			//sa.l(axis);
+			return 'h' + axis.getFormattedValue();
+		}
+	} else if (type === 'mstime') {
+		axis.type = 'tel';
+		axis = new Cleave('#xAxis', {
+			time: true,
+			timePattern: ['m', 's']
+		});
+		getData['x'] = function() {
+			//sa.l(axis);
+			return 'm' + axis.getFormattedValue();
+		}
+	} else {
+		if (iOS === false || iOS > 12.2) {
+			axis.type = 'text';
+			axis.inputmode = 'numeric';
+			axis.pattern = '[+-]?\\d*\\.?\\d*';
+		} else {
+			axis.type = 'number'
+		}
+		getData['x'] = function() {
+			//sa.l(axis);
+			return 'n' + axis.value;
+		}
+	}
+}
+function calculate_the_best(predictThis) {
+	var bestPrediction = null;
+	Object.keys(dataset).forEach(function(subtopic){
+		if (subtopic in linesForAxes) {
+			var predicted = linesForAxes[bestSetIndex].predict(predictThis)[1];
+			sa.l(predicted, linesForAxes, predictThis, typeof predictThis);
+			if (bestPrediction === null) {
+				bestPrediction = {
+					name: subtopic,
+					prediction: predicted
+				};
+			} else {
+				if (metadata['yBetter'] == 'higher' && predicted > bestPrediction.prediction) {
+					bestPrediction = {
+						name: subtopic,
+						prediction: predicted
+					};
+				} else if (predicted < bestPrediction.prediction) {
+					bestPrediction = {
+						name: subtopic,
+						prediction: predicted
+					};
+				}
+			}
+		}
+		sa.l(bestPrediction)
+	})
+	var resultText;
+	if (bestPrediction.name == 'default') {
+		resultText = 'The prediction for ' + getData.x().substr(1) + ' is: ';
+	} else {
+		resultText = 'The Best Option for ' + getData.x().substr(1) + ' is: ' + bestPrediction.name + ' with ';
+	}
+	
+	if (metadata['yType'] == 'hmtime') {
+		var predicted = sa.date_to_form(bestPrediction.prediction);
+		resultText = resultText + predicted //+ ' \xB1 ' + averageSet[bestPrediction.name]['fSigma'];
+	} else if  (metadata['yType'] == 'mstime') {
+		var predicted = sa.date_to_form(bestPrediction.prediction, true);
+		resultText = resultText + predicted //+ ' \xB1 ' + averageSet[bestPrediction.name]['fSigma'];
+	} else {
+		var predicted = bestPrediction.prediction;
+		resultText = resultText + predicted //+ ' \xB1 ' + averageSet[bestPrediction.name]['fSigma'];
+	}
+	
+	sa.el('#theBest').innerText = resultText;
+}
+
+function check_the_data(e) {
+// 	var newResults = [];
+	var xValue = getData.x();
+// 	var yValue = getData.y();
+	sa.l(xValue);
+	if (sa.test_data(xValue)) {
+		var parsed = sa.data_parse(xValue);
+		if (parsed instanceof Date) {
+			parsed = parsed.getTime();
+		}
+		calculate_the_best(parsed);
+	} else {
+		//
+		sa.l('invalid')
+	}
+}
+
+//go through entire array and check if there is at least one element which is not a number
+function check_array_nan(array) {
+	var result = false;
+	for (i=0; i < array.length; i++){
+		if (isNaN(array[i])) {
+			result = true;
+		}
+	}
+	return result;
+}
+
+
 
 //calculate the mean average of an array
 function mean_of_array(dataArray, sample) {
@@ -261,7 +468,7 @@ function mode_of_array(dataArray) {
 			}
 			return allValues;
 		}, {'default_i':0});
-		var avg = countedArray[top];
+		avg = countedArray[top];
 		//return [top, avg, countedArray];
 		return top;
 	}
