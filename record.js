@@ -83,6 +83,12 @@ function setup_inputs(xOrY) {
 			return 'n' + axis.value;
 		}
 	}
+	sa.el('#' + xOrY + 'Axis').addEventListener('keydown', function(e) {
+		//when the user presses enter (ASCII 13), it runs the same function as when the record data button is pressed
+		if (e.keyCode === 13) {
+			save_the_data(e);
+		}
+	})
 }
 
 function save_the_data(e) {

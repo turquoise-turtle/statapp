@@ -7,6 +7,7 @@ var linesForAxes = {};
 var metadata, dataset;
 var atLeastOne = false;
 var getData = {};
+var modelDifferences = {};
 
 var db = new PouchDB('statapp', {auto_compaction: true});
 db.info().then(function(){
@@ -50,7 +51,7 @@ function best_option() {
 		var formattedMean = averageSet[bestSetIndex]['fMean'];
 		var formattedSigma = averageSet[bestSetIndex]['fSigma'];
 		//the \xB1 is a plus or minus sign ±
-		sa.el('#bestAllRound').innerText = averageSet[bestSetIndex]['name'] + ' with ' + formattedMean + ' \xB1 ' + formattedSigma;
+		sa.el('#bestAllRound').innerText = averageSet[bestSetIndex]['name'] + ' with an average of ' + formattedMean + ' \xB1 ' + formattedSigma;
 	} else {
 		sa.el('#allRound').innerHTML = 'It looks like there\'s no data for this topic. Go to the <a href="./record.html#' + window.location.hash.substr(1) + '" class="save-button">Record Data</a> screen to enter some data';
 	}
@@ -218,15 +219,22 @@ function process_subtopic(subtopic) {
 function generate_tests(subtopicName, subtopicDataset, models, doNotUse, maxTests) {
 	//the default maximum number of tests is 10
 	maxTests = maxTests || 10;
+	
 	//a two dimensional array which stores all the results from the tests on each of the five models
 	var test2dArray = [[],[],[],[],[]];
 	
+	//get the length of the dataset
+	var datasetLength = subtopicDataset.x.length;
 	//run these tests on maxTests number of variables
-	for (var currentTestIndex=0; currentTestIndex < maxTests && currentTestIndex < subtopicDataset.x.length; currentTestIndex++) {
+	for (var currentTestIndex=0; currentTestIndex < maxTests && currentTestIndex < datasetLength; currentTestIndex++) {
+	
+		//generate a random index for the dataset, by generating a random nume
+		var randomIndex = Math.floor(Math.random() * datasetLength);
+		
 // 		sa.l(currentTestIndex)
 		var testX = subtopicDataset.x[currentTestIndex]
-		var testY = subtopicDataset.y[currentTestIndex]
-// 		sa.l(testX, testY);
+		var actualY = subtopicDataset.y[currentTestIndex]
+// 		sa.l(testX, actualY);
 		
 		//generate a list of expected y values for a given x value
 		//.predict(x) returns an array of [x,y], so we get the y value
@@ -246,7 +254,7 @@ function generate_tests(subtopicName, subtopicDataset, models, doNotUse, maxTest
 				return false;
 			} else {
 				//get the absolute |y| value of the difference between the expected y value and the actual y value
-				var result = Math.abs(testY - testValue);
+				var result = Math.abs(actualY - testValue);
 				//pushes the test result for e.g. the linear model into an array with all other tests from the linear model
 				test2dArray[index].push(result);
 // 				sa.l(result, index)
@@ -291,8 +299,8 @@ function generate_tests(subtopicName, subtopicDataset, models, doNotUse, maxTest
 	if (closestTestIndex !== false) {
 		console.warn(test2dArray[closestTestIndex], closestTestIndex, models[closestTestIndex], test2dArray[closestTestIndex])
 		linesForAxes[subtopicName] = models[closestTestIndex];
-		
-		returnValue = [true, closestTestIndex];
+		modelDifferences[subtopicName] = test2dArray[closestTestIndex];
+		returnValue = [true, closestTestIndex, test2dArray[closestTestIndex]];
 	} else {
 		console.error('no equation');
 		
@@ -345,6 +353,12 @@ function setup_input() {
 			return 'n' + axis.value;
 		}
 	}
+	sa.el('#xAxis').addEventListener('keydown', function(e) {
+		//when the user presses enter (ASCII 13), it runs the same function as when the button is pressed
+		if (e.keyCode === 13) {
+			check_the_data(e);
+		}
+	})
 }
 function calculate_the_best(predictThis) {
 	var bestPrediction = null;
@@ -382,14 +396,19 @@ function calculate_the_best(predictThis) {
 	
 	if (metadata['yType'] == 'hmtime') {
 		var predicted = sa.date_to_form(bestPrediction.prediction);
-		resultText = resultText + predicted //+ ' \xB1 ' + averageSet[bestPrediction.name]['fSigma'];
+		var predictionAccuracy = sa.date_to_form(modelDifferences[bestPrediction.name]);
+// 		resultText = resultText + predicted ;
 	} else if  (metadata['yType'] == 'mstime') {
 		var predicted = sa.date_to_form(bestPrediction.prediction, true);
-		resultText = resultText + predicted //+ ' \xB1 ' + averageSet[bestPrediction.name]['fSigma'];
+		var predictionAccuracy = sa.date_to_form(modelDifferences[bestPrediction.name], true);
+// 		resultText = resultText + predicted + ' \xB1 ' + modelDifferences[bestPrediction.name];
 	} else {
 		var predicted = bestPrediction.prediction;
-		resultText = resultText + predicted //+ ' \xB1 ' + averageSet[bestPrediction.name]['fSigma'];
+		var predictionAccuracy = modelDifferences[bestPrediction.name];
+// 		resultText = resultText + predicted + ' \xB1 ' + modelDifferences[bestPrediction.name];
 	}
+	resultText = resultText + predicted + ' \xB1 ' + predictionAccuracy;
+	
 	
 	sa.el('#theBest').innerText = resultText;
 }

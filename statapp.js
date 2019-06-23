@@ -217,7 +217,20 @@ window.sa = (function() {
 		} else {
 			//number
 			value = value.replace('n', '');
-			var numberRegex = /^[+-]?\d*\.?\d*$/g;
+			//(a previous version of the regular expression)
+// 			var numberRegex = /^[+-]?\d*\.?\d*$/g;
+			/*
+				this regular expression pattern searches for:
+					^ – start of line
+					[+-]? – zero or one of either + or -
+					(...) – a group
+					\d+\.?\d* – one or more digits, followed by zero or one decimal points, followed by zero or more digits
+					\d*\.?\d+ – zero or more digits, followed by zero or one decimal points, followed by one or more digits
+					(\d+\.?\d*|\d*\.?\d+) – either \d+\.?\d* or \d*\.?\d+
+					$ – end of line
+					g – global match
+			*/
+			var numberRegex = /^[+-]?(\d+\.?\d*|\d*\.?\d+)$/g;
 			if (numberRegex.test(value)) {
 				//good number
 				return true;
