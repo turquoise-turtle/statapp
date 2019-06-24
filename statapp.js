@@ -268,6 +268,7 @@ window.sa = (function() {
 		return form;
 	}
 	
+	
 	//return a publicly available set of functions which are named below, which can use the private functions that aren't named
 	return {
 		l: l,
@@ -286,3 +287,14 @@ window.sa = (function() {
 		date_to_form: date_to_form
 	}
 }());
+
+if ('serviceWorker' in navigator) {
+	window.addEventListener('load', function() {
+		navigator.serviceWorker.register('/statapp/service-worker.js')
+		.then(function (reg){
+			sa.l('sw registered:', reg);
+		}, /*catch*/ function(error) {
+			sa.l('Service worker registration failed:', error);
+		});
+	});
+}
