@@ -84,11 +84,14 @@ function dataset_to_dataset(dataArray, xOrY) {
 function joined_dataset(x, y) {
 	var joinedList = [];
 	for (var index = 0; index < x.length; index++) {
-		var joinedItem = [];
-		joinedItem.push(x[index]);
-		joinedItem.push(y[index]);
-		joinedList.push(joinedItem);
-// 		sa.l(joinedItem);
+		//if the x or y value is a number (using double negatives, i.e. not not a number), then put it into the list
+		if (!(isNaN(x[index]) || isNaN(y[index]))) {
+			var joinedItem = [];
+			joinedItem.push(x[index]);
+			joinedItem.push(y[index]);
+			joinedList.push(joinedItem);
+// 			sa.l(joinedItem);
+		}
 	}
 	return joinedList;
 }
@@ -103,7 +106,7 @@ function process_subtopic(subtopic) {
 	currentAxisDataset.y = dataset_to_dataset(dataset[subtopic][1], 'y');
 	//store the dataset for the current subtopic in the global array of datasets
 	graphDataset.push(currentAxisDataset);
-// 	sa.l(currentAxisDataset.x[0],currentAxisDataset.y[0])
+	sa.l(currentAxisDataset.x,currentAxisDataset.y)
 	
 	//only go through and make/test models if there are enough datapoints
 	if (currentAxisDataset.x.length > 1) {
@@ -232,8 +235,15 @@ function generate_tests(subtopicName, subtopicDataset, models, doNotUse, maxTest
 		var randomIndex = Math.floor(Math.random() * datasetLength);
 		
 // 		sa.l(currentTestIndex)
-		var testX = subtopicDataset.x[currentTestIndex]
-		var actualY = subtopicDataset.y[currentTestIndex]
+		var testX = subtopicDataset.x[randomIndex]
+		var actualY = subtopicDataset.y[randomIndex]
+		sa.l(randomIndex)
+		while (isNaN(testX) || isNaN(actualY)) {
+			sa.l(testX, actualY)
+			randomIndex = Math.floor(Math.random() * datasetLength);
+			testX = subtopicDataset.x[randomIndex];
+			actualY = subtopicDataset.y[randomIndex];
+		}
 // 		sa.l(testX, actualY);
 		
 		//generate a list of expected y values for a given x value
@@ -248,7 +258,7 @@ function generate_tests(subtopicName, subtopicDataset, models, doNotUse, maxTest
 		//loop over every expected y value in the rawTestArray list
 		var testArray = rawTestArray.map(function(testValue, index){
 			if (isNaN(testValue)) {
-				sa.l(index);
+// 				sa.l(index);
 				//if the expected y value is Not a Number (NaN), then add false to the array instead
 				test2dArray[index].push(false);
 				return false;
