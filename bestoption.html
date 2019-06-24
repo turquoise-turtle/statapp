@@ -10,11 +10,12 @@
 		<meta name="robots" content="noindex,nofollow"><!-- All Search Engines -->
 		<meta name="googlebot" content="noindex,nofollow"><!-- Google Specific -->
 		
+		<link rel="manifest" href="statapp.webmanifest">
+		
 		<link rel="stylesheet" href="normalize.css">
 		<link rel="stylesheet" href="base.css">
 		<link rel="stylesheet" href="bestoption.css">
 		
-		<script src="mithril.js"></script>
 		<script src="pouchdb-7.0.0.js"></script>
 		<script src="cleave.js"></script>
 		<script src="regression.js"></script>
@@ -23,7 +24,7 @@
 	<body>
 		<h1 class="title"><a href="./index.html">StatApp</a></h1>
 		<section class="app" id="app">
-			<h2>Find the Best Option <span id="topicName"></span></h2>
+			<h2>Find the Best Option for <span id="topicName"></span></h2>
 			
 			<div>
 				<h4 id="allRound">All round best is <span id="bestAllRound"></span></h4>
@@ -42,6 +43,5 @@
 		</section>
 		
 		<script src="bestoption.js"></script>
-		<script src="a.js"></script>
 	</body>
 </html>
