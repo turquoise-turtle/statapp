@@ -11,11 +11,11 @@ var modelDifferences = {};
 
 var db = new PouchDB('statapp', {auto_compaction: true});
 db.info().then(function(){
-	return sa.hash_data(db)
+	return sa.hash_data(db);
 }).then(function(results) {
 	var doc = results[0];
 	metadata = doc;
-	sa.l(metadata)
+	sa.l(metadata);
 	var data = results[1].data;
 	dataset = data;
 	
@@ -34,7 +34,7 @@ function best_option() {
 		process_subtopic(subtopic);
 		//generate_tests will be written
 		//generate_averages will be written
-		sa.l(linesForAxes)
+		sa.l(linesForAxes);
 
 	});
 	
@@ -46,8 +46,8 @@ function best_option() {
 	if (bestSetIndex !== false) {
 		//var bestSetIndex = 0;
 		//for (var avgSet 
-		sa.l('there is a best option which is')
-		sa.l(averageSet[bestSetIndex])
+		sa.l('there is a best option which is');
+		sa.l(averageSet[bestSetIndex]);
 		var formattedMean = averageSet[bestSetIndex]['fMean'];
 		var formattedSigma = averageSet[bestSetIndex]['fSigma'];
 		//the \xB1 is a plus or minus sign ±
@@ -70,7 +70,7 @@ function dataset_to_dataset(dataArray, xOrY) {
 	var newList = [];
 	for (var el of dataArray) {
 		var realEl = sa.data_parse(el);
-// 		sa.l(el, realEl)
+// 		sa.l(el, realEl);
 		if (realEl instanceof Date) {
 			realEl = realEl.getTime();
 		}
@@ -106,7 +106,7 @@ function process_subtopic(subtopic) {
 	currentAxisDataset.y = dataset_to_dataset(dataset[subtopic][1], 'y');
 	//store the dataset for the current subtopic in the global array of datasets
 	graphDataset.push(currentAxisDataset);
-	sa.l(currentAxisDataset.x,currentAxisDataset.y)
+	sa.l(currentAxisDataset.x,currentAxisDataset.y);
 	
 	//only go through and make/test models if there are enough datapoints
 	if (currentAxisDataset.x.length > 1) {
@@ -115,16 +115,16 @@ function process_subtopic(subtopic) {
 		joinedAxes.push(currentAxisJoined);
 	
 		//generate the models using the library regression.js
-		var linLine = regression.linear(currentAxisJoined)//, {precision: 40, order: 3})
-		var expLine = regression.exponential(currentAxisJoined)//, {precision: 40, order: 3})
-		var logLine = regression.logarithmic(currentAxisJoined)//, {precision: 40, order: 3})
-		var powLine = regression.power(currentAxisJoined)//, {precision: 40, order: 3})
-		var polyLine = regression.polynomial(currentAxisJoined)//, {precision: 40, order: 3})
+		var linLine = regression.linear(currentAxisJoined)//, {precision: 40, order: 3});
+		var expLine = regression.exponential(currentAxisJoined)//, {precision: 40, order: 3});
+		var logLine = regression.logarithmic(currentAxisJoined)//, {precision: 40, order: 3});
+		var powLine = regression.power(currentAxisJoined)//, {precision: 40, order: 3});
+		var polyLine = regression.polynomial(currentAxisJoined)//, {precision: 40, order: 3});
 		//put them all in one array of models
 		var lineArray = [linLine, expLine, logLine, powLine, polyLine];
 	
 		//go through the models and disallow any that have a 0 as a coefficient, i.e y=0x + c will always equal c, so it's not a good approximation
-		//or Infinity, or NaN (not a number)
+		//or Infinity, or NaN (not a number);
 		var doNotUse = [];
 		if (linLine.equation[0] == 0 || linLine.equation[0] == Infinity || isNaN(linLine.equation[0])) {
 			doNotUse.push(0);
@@ -139,11 +139,11 @@ function process_subtopic(subtopic) {
 			doNotUse.push(3);
 		}
 		//except the polynomial model, because that can have a y=0x^2 + 0.2x + c and still be valid
-// 		sa.l(lineArray[4].equation, lineArray[4].equation.includes(0))
+// 		sa.l(lineArray[4].equation, lineArray[4].equation.includes(0));
 	
 	
 	
-		//sa.empty_lines()
+		//sa.empty_lines();
 		
 		//go through and do all the test
 		var subtopicHasModel = generate_tests(subtopic, currentAxisDataset, lineArray, doNotUse);
@@ -156,7 +156,7 @@ function process_subtopic(subtopic) {
 		}
 	}
 	if (currentAxisDataset.x.length > 0) {
-		sa.empty_lines()
+		sa.empty_lines();
 		/*
 			generate the averages
 		*/
@@ -215,7 +215,7 @@ function process_subtopic(subtopic) {
 			}
 		}
 		
-		sa.l('')
+		sa.l('');
 	}
 }
 
@@ -234,12 +234,12 @@ function generate_tests(subtopicName, subtopicDataset, models, doNotUse, maxTest
 		//generate a random index for the dataset, by generating a random nume
 		var randomIndex = Math.floor(Math.random() * datasetLength);
 		
-// 		sa.l(currentTestIndex)
+// 		sa.l(currentTestIndex);
 		var testX = subtopicDataset.x[randomIndex]
 		var actualY = subtopicDataset.y[randomIndex]
-		sa.l(randomIndex)
+		sa.l(randomIndex);
 		while (isNaN(testX) || isNaN(actualY)) {
-			sa.l(testX, actualY)
+			sa.l(testX, actualY);
 			randomIndex = Math.floor(Math.random() * datasetLength);
 			testX = subtopicDataset.x[randomIndex];
 			actualY = subtopicDataset.y[randomIndex];
@@ -267,12 +267,12 @@ function generate_tests(subtopicName, subtopicDataset, models, doNotUse, maxTest
 				var result = Math.abs(actualY - testValue);
 				//pushes the test result for e.g. the linear model into an array with all other tests from the linear model
 				test2dArray[index].push(result);
-// 				sa.l(result, index)
+// 				sa.l(result, index);
 				return result;
 			}
 		});
-// 		sa.l(testArray)
-// 		sa.l(sa.only_numbers(testArray))
+// 		sa.l(testArray);
+// 		sa.l(sa.only_numbers(testArray));
 	}
 	
 	sa.l(test2dArray);
@@ -281,7 +281,7 @@ function generate_tests(subtopicName, subtopicDataset, models, doNotUse, maxTest
 	test2dArray = test2dArray.map(function(setOfTests) {
 		return mean_of_array(setOfTests);
 	});
-	sa.l(test2dArray)
+	sa.l(test2dArray);
 	
 	//loop through the now flattened array to find the smallest average difference of the models, but ignore any models that were added to the doNotUse exclusion list
 	var closestTestIndex = 0;
@@ -307,7 +307,7 @@ function generate_tests(subtopicName, subtopicDataset, models, doNotUse, maxTest
 	var returnValue;
 	
 	if (closestTestIndex !== false) {
-		console.warn(test2dArray[closestTestIndex], closestTestIndex, models[closestTestIndex], test2dArray[closestTestIndex])
+		console.warn(test2dArray[closestTestIndex], closestTestIndex, models[closestTestIndex], test2dArray[closestTestIndex]);
 		linesForAxes[subtopicName] = models[closestTestIndex];
 		modelDifferences[subtopicName] = test2dArray[closestTestIndex];
 		returnValue = [true, closestTestIndex, test2dArray[closestTestIndex]];
@@ -324,8 +324,8 @@ function generate_tests(subtopicName, subtopicDataset, models, doNotUse, maxTest
 function setup_input() {
 	//the function goes through the user agent string, checks if it is an iOS device, and if it is it gets the iOS version number. found at https://gist.github.com/Craga89/2829457
 	var iOS = parseFloat(
-	('' + (/CPU.*OS ([0-9_]{1,5})|(CPU like).*AppleWebKit.*Mobile/i.exec(navigator.userAgent) || [0,''])[1])
-	.replace('undefined', '3_2').replace('_', '.').replace('_', '')
+	('' + (/CPU.*OS ([0-9_]{1,5})|(CPU like).*AppleWebKit.*Mobile/i.exec(navigator.userAgent) || [0,''])[1]);
+	.replace('undefined', '3_2').replace('_', '.').replace('_', '');
 ) || false;
 
 	var type = metadata['xType'];
@@ -368,7 +368,7 @@ function setup_input() {
 		if (e.keyCode === 13) {
 			check_the_data(e);
 		}
-	})
+	});
 }
 function calculate_the_best(predictThis) {
 	var bestPrediction = null;
@@ -395,8 +395,8 @@ function calculate_the_best(predictThis) {
 				}
 			}
 		}
-		sa.l(bestPrediction)
-	})
+		sa.l(bestPrediction);
+	});
 	var resultText;
 	if (bestPrediction.name == 'default') {
 		resultText = 'The prediction for ' + getData.x().substr(1) + ' is: ';
@@ -436,7 +436,7 @@ function check_the_data(e) {
 		calculate_the_best(parsed);
 	} else {
 		//
-		sa.l('invalid')
+		sa.l('invalid');
 	}
 }
 
@@ -460,8 +460,8 @@ function mean_of_array(dataArray, sample) {
 	if (dataArray.length) {
 		//the idea for using the .reduce function (which is a function available on arrays) was found at https://stackoverflow.com/questions/10359907/array-sum-and-average#10624256
 		//basically it lets you "reduce" an array into a single value, using the provided function
-		//my provided function is just add the total so far plus the current value (the value at the current index of the array)
-// 		sa.l(dataArray)
+		//my provided function is just add the total so far plus the current value (the value at the current index of the array);
+// 		sa.l(dataArray);
 		var sum = dataArray.reduce(function (accumulator, currentValue) {
 			return accumulator + currentValue;
 		//the 0 just means start at index 0
@@ -476,7 +476,7 @@ function mean_of_array(dataArray, sample) {
 		avg = sum / length;
 	}
 	if (avg == false) {
-		sa.l(dataArray)
+		sa.l(dataArray);
 	}
 	return avg;
 }

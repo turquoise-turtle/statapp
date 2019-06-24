@@ -21,13 +21,13 @@ function precache() {
 
 // when the website requests a resource, it will respond with the cached version, but will update the resource from the server in the background, for the next visit
 self.addEventListener('fetch', function(evt) {
-	console.log('The service worker is serving the asset.');
 	//we have a doNotCache function that we can use to bypass the cache
 	if (doNotCache(evt.request)) {
-		//console.log(evt.request);
+		console.log('The network is serving the asset');
 		//fetch is the default function which gets the resource from the internet
 		evt.respondWith(fetch(evt.request))
 	} else {
+		console.log('The cache is serving the asset');
 		//this will use the cached version of the resource
 		evt.respondWith(fromCache(evt.request));
 	}
