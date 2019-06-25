@@ -1,24 +1,25 @@
 /* title area */
 .title {
-	display: flex;
-	justify-content: center;
+/* 	moved to base.css */
+/* 	display: flex; */
+/* 	justify-content: center; */
 }
 
 /* list of topics */
-.app {
+.newapp {
 	display: grid;
 	grid-gap: 2rem;
 	margin-bottom: 2rem;
 }
 /* Larger than mobile */
 @media (min-width: 600px) {
-	.app {
+	.newapp {
 		grid-template-columns: repeat(2, 1fr);
 	}
 }
 /* Larger than phablet */
 @media (min-width: 900px) {
-	.app {
+	.newapp {
 		grid-template-columns: repeat(3, 1fr);
 	}
 }
@@ -38,11 +39,28 @@
 
 .card {
 	margin: auto;
-	border: 1px solid black;
+	border: 2px solid #1A535C;
 	border-radius: 1rem;
 	padding-left: 0.5rem;
 	padding-right: 0.5rem;
 	padding-bottom: 0.5rem;
+}
+.card, .card a {
+/* 	background-color: #1A535C; */
+/* 	color: #F7FFF7 !important; */
+	
+/* 	bg #2A8476
+  fg #EDEAD0 
+  
+  #84DCC6
+  #3AB795
+  
+  #1A535C
+  
+  #4ECDC4
+  
+  
+  */
 }
 
 /*.card-links > a:nth-child(even):after {
@@ -70,10 +88,35 @@
 	border-radius: 2rem;
 	text-align: center;
 }
+.fp-bottom {
+	bottom: 1rem;
+}
+.fp-middle {
+	bottom: 3.5rem;
+}
+.fp-top {
+	bottom: 6rem;
+}
 .floating-plus-text {
 	margin: 0;
 	color: black;
 }
 a.floating-plus-link {
 	text-decoration: none;
+}
+
+/* delete link */
+#deleteLink {
+	color: #F7FFF7;
+	background-color: #DA2B3C;
+	margin: 0 auto;
+	box-shadow: 0 5px 0 darkred;
+}
+#deleteLink:active {
+	box-shadow: none;
+	top: 5px;
+}
+.delete-box-parent {
+/* 	display: inline-block; */
+	margin-bottom: 2rem;
 }

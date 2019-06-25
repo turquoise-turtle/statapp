@@ -5,9 +5,13 @@
 .title {
 	display: flex;
 	justify-content: center;
+	background-color: #1A535C;
+	margin-top: 0;
+	padding: 0.5rem 0 0.5rem 0;
 }
-.title > a {
+.title, .title > a {
 	text-decoration: none;
+	color: #F7FFF7 !important;
 }
 
 /* */
@@ -15,47 +19,125 @@
 body {
 	/* this font-family combination was found at https://30-seconds.github.io/30-seconds-of-css/#system-font-stack and apparently uses the native font of the operating system through the successive fallbacks */
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	background-color: #F7FFF7;
 }
 
 .hidden {
-	display: none;
+	display: none !important;
+}
+
+
+.app {
+/* 	margin-left: 1rem; */
+}
+
+body:last-child {
+	margin-bottom: 1rem;
 }
 
 /* */
 /* individual element styles */
 a {
 	color: black;
+	text-decoration-color: #5D737E;
+/* 	#1A535C; */
+/* 	position: relative; */
 }
 a:visited {
 	color: black;
 }
+a:hover {
+	text-decoration: none;
+}
+
+/* partly from https://30-seconds.github.io/30-seconds-of-css/#button-border-animation */
+/* It adds an underline to the link which will expand (over 0.25s) under the active (being-clicked) link */
+.nice-link:before,
+.nice-link:after {
+	border: 0 solid transparent;
+	transition: all 0.25s;
+	transition-timing-function: ease-out;
+	height: 1.5rem;
+	width: 0rem;
+	content: '';
+}
+.nice-link:active:after {
+	content: '' !important;
+	border-bottom: 2px solid #1A535C;
+	right: 0px;
+	bottom: -5px;
+	width: 100%;
+	position: absolute;
+}
+
+.nice-link:active {
+	position: relative;
+}
+
+/* partly from https://css-tricks.com/css-basics-styling-links-like-boss/ */
+.pushButton {
+	border: unset;
+	display: block;
+	padding: 0.5rem;
+	border-radius: 0.35rem;
+	text-decoration: none;
+	position: relative;
+	/* don't forget to set color, background-color and box-shadow: 0 5px 0 #00458F; */
+}
+.pushButton:active {
+	box-shadow: none !important;
+	top: 5px;
+}
+
 
 .save-button {
-	margin-top: 1rem;
+	/* margin-top: 1rem; */
+	background-color: #4CEFE4;
+	display: block;
+	/* shorthand for: 1rem of margin above, auto margin left, 0 margin below, auto margin right */
+	/* the left and right auto margin basically centers the button in the screen */
+	margin: 1rem auto 0 auto;
+	background-color: #218739;
+	color: white;
 }
 button {
 	cursor: pointer;
 }
 
-/* form styles from https://github.com/csstools/sanitize.css/blob/master/forms.css */
-button, input, select, textarea {
-	/*background-color: transparent;*/
-	/*border: 1px solid WindowFrame;*/
-	/*color: inherit;*/
-	/*font: inherit;*/
-	/*letter-spacing: inherit;*/
-	/*padding: 0.25em 0.375em;*/
-}
-select {
-	/*-moz-appearance: none;*/
-	/*-webkit-appearance: none;*/
-	/*background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='4'%3E%3Cpath d='M4 0h6L7 4'/%3E%3C/svg%3E") no-repeat right center / 1em;*/
-	/*border-radius: 0;*/
-	/*padding-right: 1em;*/
+label {
+	display: block;
 }
 
-input:invalid {
-	background-color: red;
+/* these two form style sets are from https://github.com/csstools/sanitize.css/blob/master/forms.css */
+button, input, select, textarea {
+	background-color: transparent;
+	border: 1px solid WindowFrame;
+	color: inherit;
+	font: inherit;
+	letter-spacing: inherit;
+	padding: 0.25em 0.375em;
+}
+select {
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='4'%3E%3Cpath d='M4 0h6L7 4'/%3E%3C/svg%3E") no-repeat right center / 1em;
+	border-radius: 0;
+	padding-right: 1em;
+}
+
+/* add space between inputs */
+.input-pair {
+	margin-bottom: 1rem;
+}
+
+.validity input:invalid {
+	/* background-color: #D32F2F; */
+	border-color: #D32F2F;
+}
+.validity input:invalid:focus {
+	/* partly from https://patterns.boilerform.design/#group-input-field-component-email */
+	outline: 0;
+	box-shadow: 0 0 0 2px #CF0B00;
 }
 
 /* */
@@ -71,4 +153,24 @@ input:invalid {
 /* grid utility */
 .fill-two {
 	grid-column: span 2 / auto;
+}
+
+/* centering */
+.center-text {
+	text-align: center;
+}
+.center-flex {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+.center-grid {
+	display: grid;
+	/* grid-gap: 2rem; */
+}
+
+.no-margin {
+	/* because of the main container styling having a default 1rem margin left, we need a way to counteract it */
+	margin-left: -1rem;
 }

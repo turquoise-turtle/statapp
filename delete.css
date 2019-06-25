@@ -1,0 +1,14 @@
+/* delete link */
+#deleteTopic {
+	color: #F7FFF7;
+	background-color: #DA2B3C;
+	margin: 0 auto;
+	/* partly from https://css-tricks.com/css-basics-styling-links-like-boss/ */
+	box-shadow: 0 5px 0 darkred;
+}
+
+.delete-box-parent {
+/* 	display: block; */
+	margin-bottom: 2rem;
+	margin-top: 2rem;
+}

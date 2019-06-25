@@ -1,0 +1,11 @@
+#bestOption {
+	color: #F7FFF7;
+	background-color: #0071EB;
+	box-shadow: 0 5px 0 #00458F;
+}
+
+#noData {
+	width: 80%;
+	/* text-align: center; */
+	/* 	margin: 0; */
+}
