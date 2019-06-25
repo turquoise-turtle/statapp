@@ -70,7 +70,7 @@ window.sa = (function() {
 			}
 			//because of the asynchronous functions all now being in an array 'list', Promise.all will wait till all of the async functions inside it have finished before returning the final result
 			var promiselist = Promise.all(list);
-			return Promise.all([desc, promiselist]);
+			return Promise.all([description, promiselist]);
 		}
 		
 		//if stuff is just a string, get that specific document
@@ -294,7 +294,7 @@ if ('serviceWorker' in navigator) {
 		.then(function (reg){
 			sa.l('sw registered:', reg);
 		}, /*catch*/ function(error) {
-			sa.l('Service worker registration failed:', error);
+			console.warn('Service worker registration failed:', error);
 		});
 	});
 }

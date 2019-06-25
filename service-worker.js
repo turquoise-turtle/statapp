@@ -37,7 +37,7 @@ self.addEventListener('fetch', function(evt) {
 
 //the exclusion tester will return true or false which determines whether it bypasses the cache or not
 function doNotCache(request) {
-	var result = true;
+	var result = false;
 	/*
 	var url = request.url;
 	var doNotCacheList = [
