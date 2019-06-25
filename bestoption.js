@@ -324,8 +324,8 @@ function generate_tests(subtopicName, subtopicDataset, models, doNotUse, maxTest
 function setup_input() {
 	//the function goes through the user agent string, checks if it is an iOS device, and if it is it gets the iOS version number. found at https://gist.github.com/Craga89/2829457
 	var iOS = parseFloat(
-	('' + (/CPU.*OS ([0-9_]{1,5})|(CPU like).*AppleWebKit.*Mobile/i.exec(navigator.userAgent) || [0,''])[1]);
-	.replace('undefined', '3_2').replace('_', '.').replace('_', '');
+	('' + (/CPU.*OS ([0-9_]{1,5})|(CPU like).*AppleWebKit.*Mobile/i.exec(navigator.userAgent) || [0,''])[1])
+	.replace('undefined', '3_2').replace('_', '.').replace('_', '')
 ) || false;
 
 	var type = metadata['xType'];
