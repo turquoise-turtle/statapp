@@ -1,5 +1,9 @@
 var db = new PouchDB('statapp', {auto_compaction: true});
 
+sa.el('#blankButton').addEventListener('click', function(e){
+	e.preventDefault();
+});
+
 //this subtopic section draws a lot of inspiration from https://www.w3schools.com/howto/howto_js_todolist.asp
 sa.el('#addCurrentSubtopic').addEventListener('click', function(event) {
 	event.preventDefault();
@@ -78,11 +82,13 @@ function save_topic(event) {
 	//the default action is to reload the page and send the data to a server, but since I don't have a server set up for receiving this data I don't want the page to just reload so I prevent the default action
 	event.preventDefault();
 	
-	//this will validate that one of the radio buttons has been checked
-	if (sa.el('input[name="y_better"]:checked') == null) {
-		alert('hi');
+	//this will validate that the form has been filled in, based on the pattern and required attributes in the HTML markup
+	var isValidForm = sa.el('form').checkValidity();
+	if (!isValidForm) {
+		sa.el('#app').classList.add('validity');
 		return;
 	}
+// 	if (sa.el('input[name="y_better"]:checked') == null) {
 	
 	var topicObject = {};
 	

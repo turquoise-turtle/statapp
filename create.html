@@ -23,19 +23,27 @@
 	<body>
 		<h1 class="title"><a href="./index.html">StatApp</a></h1>
 		<section class="app" id="app">
-			<h2>Create a New Topic</h2>
-			<form> <!-- to use the valid/invalid CSS types? -->
-				<label for="topicName">Name of topic: </label>
-				<input type="text" id="topicName">
+			<h2 class="center-text">Create a New Topic</h2>
+			<form class="center-flex"> <!-- to use the valid/invalid CSS types? -->
+				
+				<section class="axis-section">
+					<label for="topicName">Name of topic: </label>
+					<div>
+					<input type="text" id="topicName" required>
+					<button id="blankButton" tabindex="-1">+</button>
+					</div>
+				</section>
 				
 				<!-- -->
 				<!--	 -->
 				<!-- subtopics -->
-				<section class="subtopic-grid">
+				<section class="subtopic-grid axis-section">
 					<label for="currentSubtopic">Add a subtopic</label>
-					<input type="text" id="currentSubtopic">
-					<button id="addCurrentSubtopic">+</button>
-					<ul id="subtopics">
+					<div>
+						<input type="text" id="currentSubtopic">
+						<button id="addCurrentSubtopic">+</button>
+					</div>
+					<ul id="subtopics" class="fill-two">
 						<!--<li><span class="subtopicListItem">subtopic name here</span><span class="close">×</span></li>-->
 					</ul>
 				</section>
@@ -45,10 +53,10 @@
 				<!-- X value -->
 				<section class="axis-section">
 					<label for="xName">Name of x value: </label>
-					<input type="text" id="xName">
+					<input type="text" id="xName" required>
 				
 					<label for="xType">Data type of x value: </label>
-					<select id="xType">
+					<select id="xType" required>
 						<option value="number">Number</option>
 						<option value="hmtime">Time hh:mm</option>
 						<option value="mstime">Time mm:ss</option>
@@ -76,10 +84,10 @@
 				<!-- Y value -->
 				<section class="axis-section">
 					<label for="yName">Name of y value: </label>
-					<input type="text" id="yName">
+					<input type="text" id="yName" required>
 				
 					<label for="yType">Data type of y value: </label>
-					<select id="yType">
+					<select id="yType" required>
 						<option value="number">Number</option>
 						<option value="hmtime">Time hh:mm</option>
 						<option value="mstime">Time mm:ss</option>
@@ -103,14 +111,18 @@
 					
 					<div class="fill-two">
 						<p class="better-header">It's better for this value to be: </p>
-						<input type="radio" id="yBetterHigher" name="y_better" value="higher">
-						<label for="yBetterHigher">Higher</label>
-						<input type="radio" id="yBetterLower" name="y_better" value="lower">
-						<label for="yBetterLower">Lower</label>
+						<div class="radio-input-box">
+							<input type="radio" id="yBetterHigher" name="y_better" value="higher" required>
+							<label for="yBetterHigher">Higher</label>					
+						</div>
+						<div class="radio-input-box">
+							<input type="radio" id="yBetterLower" name="y_better" value="lower">
+							<label for="yBetterLower">Lower</label>
+						</div>
 					</div>
 				</section>
 				
-				<button id="saveTopic" class="save-button">Save Topic</button>
+				<button id="saveTopic" class="save-button pushButton green">Save Topic</button>
 				<span id="saveStatus" class="hidden">Saved New Topic, redirecting to homepage</span>
 			</form>
 		</section>
