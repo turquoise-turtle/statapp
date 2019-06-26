@@ -12,13 +12,13 @@
 	margin-bottom: 2rem;
 }
 /* Larger than mobile */
-@media (min-width: 600px) {
+@media (min-width: 622px) {
 	.newapp {
 		grid-template-columns: repeat(2, 1fr);
 	}
 }
 /* Larger than phablet */
-@media (min-width: 900px) {
+@media (min-width: 948px) {
 	.newapp {
 		grid-template-columns: repeat(3, 1fr);
 	}
