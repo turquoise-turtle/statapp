@@ -21,7 +21,6 @@ function precache() {
 			'/statapp/create.css',
 			'/statapp/bestoption.html',
 			'/statapp/record.css',
-			'/statapp/file.json',
 			'/statapp/statapp.js',
 			'/statapp/delete.js',
 			'/statapp/create.html',

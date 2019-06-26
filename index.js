@@ -55,8 +55,11 @@ function initialise_db(dbref) {
 function basic_single_topic() {
 	//m.render takes an element (root is the 'app' element from above) and the m function
 	//it creates a 'section' element, with the 'no-topics' class, and inside that section element is a h3 header with the text
-	m.render(root, m('section', {'class':'no-topics'}, [
-		m('h3', 'Huh, it looks like you don’t have any topics. Click the plus button to create one')
+	m.render(root, m('section.center-text', {'class':'no-topics'}, [
+// 		m('h3', 'Hey there, it looks like you\'re new.'),
+		m('h2', 'Welcome to StatApp'),
+		m('h3', 'You can create a topic which can store data along both an x and y axis, and view the results as a graph or see the best option.'),
+		m('h3', 'Click the Create Topic button to start')
 	]))
 	
 	sa.el('#deleteLink').parentNode.removeChild(sa.el('#deleteLink'))
