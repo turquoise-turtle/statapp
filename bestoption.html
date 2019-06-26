@@ -24,21 +24,25 @@
 	<body>
 		<h1 class="title"><a href="./index.html">StatApp</a></h1>
 		<section class="app" id="app">
-			<h2>Find the Best Option for <span id="topicName"></span></h2>
+			<h2 class="center-text">Find the Best Option for <span id="topicName"></span></h2>
 			
-			<div>
+			<div class="center-text">
 				<h4 id="allRound">All round best is <span id="bestAllRound"></span></h4>
+			</div>
+			<div class="center-flex center-text">
+				<p id="noData" class="hidden"></p>
 			</div>
 			
 			
-			<div id="computation">
-				<h4 class="predictTitle">Predict a Value</h5>
+			<div id="computation" class="center-flex">
+				<h3 class="predictTitle">Predict a Value</h3>
 				<div>
 					<label for="xAxis" id="xAxisLabel">xLabel</label>
-					<input type="number" id="xAxis">
-					<button id="calculateBest" class="save-button">Calculate best option</button>
-					<h4 id="theBest"></h4>
+					<input type="number" id="xAxis" required>
+					
 				</div>
+				<button id="calculateBest" class="save-button pushButton green">Calculate best option</button>
+				<h4 id="theBest"></h4>
 			</div>
 		</section>
 		

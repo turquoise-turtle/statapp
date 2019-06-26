@@ -51,9 +51,14 @@ function best_option() {
 		var formattedMean = averageSet[bestSetIndex]['fMean'];
 		var formattedSigma = averageSet[bestSetIndex]['fSigma'];
 		//the \xB1 is a plus or minus sign ±
-		sa.el('#bestAllRound').innerText = averageSet[bestSetIndex]['name'] + ' with an average of ' + formattedMean + ' \xB1 ' + formattedSigma;
+		var averageText = averageSet[bestSetIndex]['name'] + ' with an average of ' + formattedMean;
+		if (formattedSigma !== false) {
+			averageText = averageText + ' \xB1 ' + formattedSigma;
+		}
+		sa.el('#bestAllRound').innerText = averageText;
 	} else {
-		sa.el('#allRound').innerHTML = 'It looks like there\'s no data for this topic. Go to the <a href="./record.html#' + window.location.hash.substr(1) + '" class="save-button">Record Data</a> screen to enter some data';
+		sa.el('#allRound').innerHTML = 'It looks like there\'s not enough data for this topic. Go to the <a href="./record.html#' + window.location.hash.substr(1) + '" class="nice-link">Record Data</a> screen to enter some data';
+		sa.el('#computation').classList.add('hidden');
 	}
 	
 	if (atLeastOne) {
@@ -424,6 +429,7 @@ function calculate_the_best(predictThis) {
 }
 
 function check_the_data(e) {
+	sa.el('#app').classList.add('validity');
 // 	var newResults = [];
 	var xValue = getData.x();
 // 	var yValue = getData.y();
