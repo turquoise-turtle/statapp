@@ -21,6 +21,6 @@
 	],
 	"start_url": "/statapp/index.html",
 	"display": "standalone",
-	"theme_color": "#3AB795",
-	"background_color": "#EDEAD0"
+	"theme_color": "#1A535C",
+	"background_color": "#F7FFF7"
 }

@@ -76,7 +76,7 @@ function setup_inputs(xOrY) {
 			axis.inputmode = 'numeric';
 			axis.pattern = '[+-]?\\d*\\.?\\d*';
 		} else {
-			axis.type = 'number'
+			axis.type = 'number';
 		}
 		getData[xOrY] = function() {
 			//sa.l(axis);
