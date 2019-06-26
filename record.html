@@ -23,26 +23,28 @@
 	<body>
 		<h1 class="title"><a href="./index.html">StatApp</a></h1>
 		<section class="app" id="app">
-			<h2>Record Data for <span id="topicName"></span></h2>
+			<h2 class="center-text">Record Data for <span id="topicName"></span></h2>
 			
 			<!-- pick a subtopic -->
-			<label for="subtopicChoice" id="subtopicChoiceLabel">Pick a subtopic</label>
-			<select id="subtopicChoice">
-				<option value="1">option</option>
-				<option value="2">option2</option>
-			</select>
+			<div class="input-pair center-flex">
+				<label for="subtopicChoice" id="subtopicChoiceLabel">Pick a subtopic</label>
+				<select id="subtopicChoice">
+					<option value="1">option</option>
+					<option value="2">option2</option>
+				</select>
+			</div>
 			
-			<div>
+			<div class="input-pair center-flex">
 				<label id="xAxisLabel" for="xAxis">xLabel</label>
 				<input type="tel" id="xAxis" required>
 			</div>
 			
-			<div>
+			<div class="input-pair center-flex">
 				<label id="yAxisLabel" for="yAxis">yLabel</label>
 				<input type="tel" id="yAxis" required>
 			</div>
 			
-			<button id="saveData" class="save-button">Record Data</button>
+			<button id="saveData" class="save-button pushButton green">Record Data</button>
 			<span id="saveStatus" class="hidden">Saved Data, redirecting to Results page</span>
 		</section>
 		<script src="record.js"></script>

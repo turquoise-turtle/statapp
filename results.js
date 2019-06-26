@@ -9,10 +9,25 @@ db.info().then(function(){
 	dataset = data;
 	
 	sa.el('#topicName').innerText = doc.name;
+	sa.el('#bestOption').href = './bestoption.html#' + window.location.hash.substr(1);
 	
 	sa.l(dataset);
+	var isThereData = false;
+	Object.keys(dataset).forEach(function(subtopic) {
+		if (dataset[subtopic][0].length > 0) {
+			isThereData = true;
+			sa.l(dataset[subtopic][0])
+		}
+	});
 	
-	graph_everything();
+	if (isThereData) {
+		graph_everything();
+	} else {
+		sa.el('#noData').innerHTML = 'It looks like there\'s not enough data for this topic. Go to the <a href="./record.html#' + window.location.hash.substr(1) + '" class="nice-link">Record Data</a> screen to enter some data';
+		sa.el('#noData').classList.remove('hidden');
+		sa.el('#graphType').classList.add('hidden');
+		sa.el('#bestOption').classList.add('hidden');
+	}
 });
 
 sa.el('#graphType').addEventListener('change', graph_everything);

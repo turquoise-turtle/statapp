@@ -45,16 +45,23 @@ deleteButton.addEventListener('click', function(event) {
 });
 
 function delete_topic(topicId) {
-	sa.sget(db, 'meta_topicList')
-	.then(function(doc) {
-		var list = doc.list;
+	var dataStorage = 'data_' + topicId;
+	sa.sget(db, ['meta_topicList', dataStorage])
+	.then(function(bulkReturn) {
+		sa.l(bulkReturn);
+		var metadata = bulkReturn[1][bulkReturn[0]['meta_topicList']];
+		var list = metadata.list;
 		for (var index in list) {
 			if (list[index].id === topicId) {
 				list.splice(index, 1);
 			}
 		}
-		doc.list = list;
+		metadata.list = list;
 		selectBox.remove(selectBox.selectedIndex);
-		return sa.sset(db, doc);
+		
+		var dataItem = bulkReturn[1][bulkReturn[0][dataStorage]];
+		dataItem._deleted = true;
+		sa.l(metadata, dataItem)
+		return sa.sset(db, [metadata, dataItem]);
 	}).then(sa.l);
 }

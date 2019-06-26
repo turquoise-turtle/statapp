@@ -23,7 +23,11 @@
 	<body>
 		<h1 class="title"><a href="./index.html">StatApp</a></h1>
 		<section class="app" id="app">
-			<h2>View Results for <span id="topicName"></span></h2>
+			<h2 class="center-text">View Results for <span id="topicName"></span></h2>
+			
+			<div class="center-flex center-text">
+				<p id="noData" class="hidden"></p>
+			</div>
 			
 			<select id="graphType">
 				<option value="scatter">Scatter Plot</option>
@@ -34,8 +38,10 @@
 			<div id="graphHere"></div>
 			
 			<div id="drawHere" class="hidden"></div>
-			
-			<button id="bestOption" class="save-button">Best Option</button>
+			<section class="center-flex">
+				<a id="bestOption" class="pushButton blue">See best option</a>
+			</section>
+<!-- 			<button  class="save-button">Best Option</button> -->
 		</section>
 		
 		<script src="results.js"></script>

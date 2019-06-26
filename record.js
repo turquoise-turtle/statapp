@@ -92,6 +92,7 @@ function setup_inputs(xOrY) {
 }
 
 function save_the_data(e) {
+	sa.el('#app').classList.add('validity');
 	var newResults = [];
 	var xValue = getData.x();
 	var yValue = getData.y();
@@ -171,7 +172,7 @@ function real_save_data(x,y) {
 		setTimeout(function() {
 			sa.el('#saveStatus').classList.add('hidden');
 			setTimeout(function() {
-				//location.href = './results.html#' + window.location.hash.substr(1);
+				location.href = './results.html#' + window.location.hash.substr(1);
 				location.reload();
 			}, 100);
 		}, 1000);

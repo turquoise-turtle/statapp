@@ -68,9 +68,9 @@ function topic_ise(topic) {
 			//using topic.name & topic.id lets the function run on each record that came from the array of records
 			m('h3', topic.name),
 			m('section', {'class':'card-links'}, [
-				m('a', {'href':'./record.html#' + topic.id}, 'Record Data'),
-				m('a', {'href':'./results.html#' + topic.id}, 'View Data'),
-				m('a', {'href':'./bestoption.html#' + topic.id}, 'Best Option')
+				m('a.nice-links', {'href':'./record.html#' + topic.id}, 'Record Data |'),
+				m('a.nice-links', {'href':'./results.html#' + topic.id}, 'View Data |'),
+				m('a.nice-links', {'href':'./bestoption.html#' + topic.id}, 'Best Option')
 			])
 		]);
 }
