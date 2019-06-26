@@ -70,7 +70,7 @@
 	margin-right: 0.25rem;
 }
 .card-links > a:not(:last-child):after {
-	content: '|';
+/* 	content: '|'; */
 }
 
 /* plus button */
@@ -107,16 +107,13 @@ a.floating-plus-link {
 
 /* delete link */
 #deleteLink {
-	color: #F7FFF7;
-	background-color: #DA2B3C;
 	margin: 0 auto;
-	box-shadow: 0 5px 0 darkred;
-}
-#deleteLink:active {
-	box-shadow: none;
-	top: 5px;
 }
 .delete-box-parent {
 /* 	display: inline-block; */
+	margin-bottom: 2rem;
+}
+
+#create {
 	margin-bottom: 2rem;
 }

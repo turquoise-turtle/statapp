@@ -74,6 +74,11 @@ a:hover {
 	position: relative;
 }
 
+.nice-links:active {
+	border: 2px solid #1A535C;
+	padding: 2px;
+}
+
 /* partly from https://css-tricks.com/css-basics-styling-links-like-boss/ */
 .pushButton {
 	border: unset;
@@ -88,6 +93,22 @@ a:hover {
 	box-shadow: none !important;
 	top: 5px;
 }
+.pushButton.red {
+	color: #F7FFF7;
+	background-color: #DA2B3C;
+	box-shadow: 0 5px 0 darkred;
+}
+.pushButton.green {
+	color: #F7FFF7;
+	background-color: #218739;
+	box-shadow: 0 5px 0 #186329;
+}
+.pushButton.blue {
+	color: #F7FFF7;
+	background-color: #0071EB;
+	box-shadow: 0 5px 0 #00458F;
+}
+
 
 
 .save-button {
@@ -133,6 +154,9 @@ select {
 .validity input:invalid {
 	/* background-color: #D32F2F; */
 	border-color: #D32F2F;
+}
+.validity input[type="radio"]:invalid {
+	outline: 1px solid #CF0B00;
 }
 .validity input:invalid:focus {
 	/* partly from https://patterns.boilerform.design/#group-input-field-component-email */

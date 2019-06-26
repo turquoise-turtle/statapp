@@ -9,15 +9,8 @@
 	grid-template-columns: repeat(2, 1fr);
 	grid-gap: 0.5rem;
 }
-.subtopic-grid {
-/* 	display: grid; */
-/* 	grid-template-columns: repeat(3, 1fr); */
-}
+.subtopic-grid {/* display: grid; *//* 	grid-template-columns: repeat(3, 1fr); */}
 
-/* Larger than mobile */
-@media (min-width: 600px) {
-	
-}
 
 
 
@@ -27,4 +20,40 @@
 
 li:nth-child(even) {
 	background-color: #eee;
+}
+
+#blankButton {
+	display: none;
+}
+@media (min-width: 318px) {
+	#blankButton {	
+		display: inline-block;
+		opacity: 0;
+	}
+}
+
+#saveStatus {
+	margin-top: 2rem;
+}
+
+.radio-input-box > label {
+	display: inline-block;
+}
+
+li {
+	position: relative;
+	line-height: 1.5rem;
+	list-style-type: none;
+}
+.close {
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 2rem;
+	text-align: center;
+	cursor: pointer;
+}
+.close:hover {
+	background-color: #DA2B3C;
+	color: white;
 }
