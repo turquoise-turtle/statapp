@@ -14,7 +14,45 @@ function precache() {
 	return caches.open(CACHE).then(function (cache) {
 		//it adds all the pages and resources to the cache
 		return cache.addAll([
-			'/statapp/index.html'
+			'/statapp/mithril.js',
+			'/statapp/cleave.js',
+			'/statapp/index.html',
+			'/statapp/LICENSE',
+			'/statapp/create.css',
+			'/statapp/bestoption.html',
+			'/statapp/record.css',
+			'/statapp/file.json',
+			'/statapp/statapp.js',
+			'/statapp/delete.js',
+			'/statapp/create.html',
+			'/statapp/results.js',
+			'/statapp/pouchdb-7.0.0.js',
+			'/statapp/index.js',
+			'/statapp/create.js',
+			'/statapp/index.css',
+			'/statapp/statapp.webmanifest',
+			'/statapp/results.css',
+			'/statapp/regression.js',
+			'/statapp/README.md',
+			'/statapp/bestoption.js',
+			'/statapp/results.html',
+			'/statapp/plotly.js',
+			'/statapp/bestoption.css',
+			'/statapp/service-worker.js',
+			'/statapp/record.html',
+			'/statapp/normalize.css',
+			'/statapp/delete.html',
+			'/statapp/base.css',
+			'/statapp/record.js',
+			'/statapp/delete.css',
+			'/statapp/icons/icon512.png',
+			'/statapp/icons/icon128.png',
+			'/statapp/icons/icon192.png',
+			'/statapp/min/mithril.min.js',
+			'/statapp/min/regression.min.js',
+			'/statapp/min/plotly.min.js',
+			'/statapp/min/pouchdb-7.0.0.min.js',
+			'/statapp/min/cleave.min.js'
 		]);
 	});
 }
