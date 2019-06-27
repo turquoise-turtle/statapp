@@ -1,10 +1,3 @@
-/* title area */
-.title {
-/* 	moved to base.css */
-/* 	display: flex; */
-/* 	justify-content: center; */
-}
-
 /* list of topics */
 .newapp {
 	display: grid;
@@ -45,27 +38,8 @@
 	padding-right: 0.5rem;
 	padding-bottom: 0.5rem;
 }
-.card, .card a {
-	/* background-color: #1A535C; */
-	/* color: #F7FFF7 !important; */
-	
-/* 	bg #2A8476
-  fg #EDEAD0 
-  
-  #84DCC6
-  #3AB795
-  
-  #1A535C
-  
-  #4ECDC4
-  
-  
-  */
-	}
 
-/*.card-links > a:nth-child(even):after {
-	content: '|';
-}*/
+
 .card-links > a:not(:last-child) {
 	margin-right: 0.25rem;
 }
@@ -73,44 +47,12 @@
 /* 	content: '|'; */
 }
 
-/* plus button */
-.floating-plus {
-	/* positioning the button in the bottom right corner */
-	position: fixed;
-	bottom: 1rem;
-	right: 1.5rem;
-	
-	background-color: lightblue;
-	
-	/* make the button a circle */
-	width: 2.5rem;
-	height: 2.5rem;
-	border-radius: 2rem;
-	text-align: center;
-}
-.fp-bottom {
-	bottom: 1rem;
-}
-.fp-middle {
-	bottom: 3.5rem;
-}
-.fp-top {
-	bottom: 6rem;
-}
-.floating-plus-text {
-	margin: 0;
-	color: black;
-}
-a.floating-plus-link {
-	text-decoration: none;
-}
 
 /* delete link */
 #deleteLink {
 	margin: 0 auto;
 }
 .delete-box-parent {
-/* 	display: inline-block; */
 	margin-bottom: 2rem;
 }
 

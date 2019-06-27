@@ -41,6 +41,7 @@ function graph_everything() {
 		showlegend: true
 	};
 	
+	//go through each subtopic
 	Object.keys(dataset).forEach(function(subtopic) {
 		sa.l(subtopic, dataset[subtopic]);
 		var currentAxisDataset = {
@@ -70,7 +71,7 @@ function graph_everything() {
 				currentAxisDataset.type = 'box';
 				break;
 		}
-		
+		//the master data array is an array of records, with each record being a different subtopic
 		graphDataset.push(currentAxisDataset);
 	});
 	sa.l(graphDataset);
@@ -118,27 +119,11 @@ function dataset_to_dataset(dataArray, xOrY, milliseconds) {
 		}
 		newList.push(realEl);
 		
-// 		if (metadata[xOrY + 'Type'] === 'htime' || metadata[xOrY + 'Type'] === 'mtime') {
-// 			
-// 			var realTime = sa.data_parse(el);
-// 			
-// 			//el = el.substr(1);
-// 			//var time = el.split(':');
-// 			//var realTime = d(time[0],time[1]);
-// 			
-// 			newList.push(realTime);
-// 		} else {
-// 			el = el.substr(1);
-// 			newList.push(el);
-// 		}
-// 		//sa.l(el);
 	}
 	//sa.l(newList);
 	return newList;
 }
 
 
-
 //scatter plot example from https://plot.ly/javascript/line-and-scatter/#line-and-scatter-plot
-//bar chart example from https://plot.ly/javascript/bar-charts/#colored-and-styled-bar-chart
 //box plot example from https://plot.ly/javascript/box-plots/#grouped-box-plot

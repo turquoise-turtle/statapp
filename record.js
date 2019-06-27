@@ -155,7 +155,7 @@ function real_save_data(x,y) {
 	.then(function(results) {
 		sa.l(results.data);
 		var newData = sa.deep_clone(results.data);
-		//test the subtopic length
+		//save to different places based on the subtopic length
 		if (metadata.subtopics.length === 0) {
 			//default is the subtopic name if there's no subtopics
 			newData.default[0].push(x);
