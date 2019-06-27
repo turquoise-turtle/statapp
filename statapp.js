@@ -95,26 +95,25 @@ window.sa = (function() {
 		return dbref.put(stuff);
 	}
 	
+	//this function will return the metadata and the data document for the current topic, by analysing the hash fragment in the URL
 	var hash_data = function(dbref) {
+	
 		var hash = window.location.hash.substr(1);
 		var id = 'data_' + hash;
 		//sget(dbref, ['meta_topicList', id])
 		
 		return Promise.all([topic_metadata(dbref, hash), sget(dbref, id)])
-		//.then(function(results) {
-		//	l(results);
-		//})
 	};
 	
+	//this function will use a linear search to find the metadata for a specific topic, out of the array of records
 	var topic_metadata = function(dbref, findId) {
 		return sget(dbref, 'meta_topicList')
 		.then(function(doc) {
 			//a linear search algorithm that returns either the found topic or false
 			var list = doc.list;
-			//var found = false;
 			for (var topic of list) {
 				if (topic.id === findId) {
-					//found = true;
+					//when it returns, it stops going through the array
 					return topic;
 				}
 			}
@@ -133,12 +132,13 @@ window.sa = (function() {
 		}
 	}
 	
-	//format the values (either time or number) into a currentTest and minimumTest for the count and minimum indexes respectively
+	//format the values (either time or number) into a currentTest and minimumTest for the count and minimum indexes respectively by using a regular expression
 	data_parse = function(pieceOfData) {
+		//the regular expressions
 		var hour = /h/;
 		var minute = /m/;
-		//pieceOfData = pieceOfData.substr(1);
 		if (hour.test(pieceOfData)) {
+			//turns 'h07:38' into [07,38], into a date object with time set to 07:38
 			pieceOfData = pieceOfData.substr(1);
 			var piecesOfData = pieceOfData.split(':');
 			var endValue = d(piecesOfData[0], piecesOfData[1]);
@@ -191,6 +191,7 @@ window.sa = (function() {
 		return [xList, yList];
 	}
 	
+	//sometimes you just need space when using debugging output statements
 	empty_lines = function(amount) {
 		amount = amount || 5;
 		for (var i=0; i < amount; i++) {
@@ -208,7 +209,7 @@ window.sa = (function() {
 		if (value !== value.replace('h', '') || value !== value.replace('m', '')) {
 			//time
 			if (value.replace('h', '').length < 5 || value.replace('m', '').length < 5) {
-				//not a full time
+				//full times will have 5 characters, e.g 1 2 : 4 5
 				return false;
 			} else {
 				//"It's always a good time" ((c) Owl City)
@@ -241,6 +242,7 @@ window.sa = (function() {
 		}
 	}
 	
+	//given a date object or a Unix time, get the formatted hh:mm or mm:ss version
 	date_to_form = function(time, seconds) {
 		if (!(time instanceof Date)) {
 			time = new Date(time);
@@ -269,7 +271,8 @@ window.sa = (function() {
 	}
 	
 	
-	//return a publicly available set of functions which are named below, which can use the private functions that aren't named
+	//return a publicly available set of functions which are named below
+	//the functions which aren't name are "private functions", which can only be accessed within this file. so hash_data can use topic_metadata, but I can't personally use topic_metadata
 	return {
 		l: l,
 		el: el,
@@ -288,13 +291,15 @@ window.sa = (function() {
 	}
 }());
 
+//because statapp.js is run on every page, I'll add the service worker to the site here
 if ('serviceWorker' in navigator) {
+	//wait for the page to load
 	window.addEventListener('load', function() {
 		navigator.serviceWorker.register('/statapp/service-worker.js')
 		.then(function (reg){
 			sa.l('sw registered:', reg);
 		}, /*catch*/ function(error) {
-			console.warn('Service worker registration failed:', error);
+			sa.l('Service worker registration failed:', error);
 		});
 	});
 }

@@ -75,18 +75,6 @@ self.addEventListener('fetch', function(evt) {
 //the exclusion tester will return true or false which determines whether it bypasses the cache or not
 function doNotCache(request) {
 	var result = false;
-	/*
-	var url = request.url;
-	var doNotCacheList = [
-		'https://makerwidget.com'
-	]
-	for (var doNotCacheItem of doNotCacheList) {
-		if (url.indexOf(doNotCacheItem) > -1) {
-			result = true;
-		}
-	}
-	console.log(request.url, result);
-	*/
 	return result;
 }
 

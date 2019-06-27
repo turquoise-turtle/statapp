@@ -8,7 +8,15 @@ db.info().then(function(){
 	sa.el('#topicName').innerText = doc.name;
 	sa.el('#xAxisLabel').innerText = doc.xName;
 	sa.el('#yAxisLabel').innerText = doc.yName;
-	if (doc.subtopics.length <= 1) {
+	//only show the select box if there's more than one subtopic
+	if (doc.subtopics.length < 1) {
+		sa.el('#subtopicChoice').classList.add('hidden');
+		sa.el('#subtopicChoiceLabel').classList.add('hidden');
+	} else if (doc.subtopics.length === 1) {
+		var option = document.createElement('option');
+		option.value = doc.subtopics[0];
+		option.innerText = doc.subtopics[0];
+		sa.el('#subtopicChoice').appendChild(option);
 		sa.el('#subtopicChoice').classList.add('hidden');
 		sa.el('#subtopicChoiceLabel').classList.add('hidden');
 	} else {
@@ -42,18 +50,24 @@ function setup_inputs(xOrY) {
 	('' + (/CPU.*OS ([0-9_]{1,5})|(CPU like).*AppleWebKit.*Mobile/i.exec(navigator.userAgent) || [0,''])[1])
 	.replace('undefined', '3_2').replace('_', '.').replace('_', '')
 ) || false;
-
+	
+	//get the type
 	var type = metadata[xOrY + 'Type'];
+	//get the input box for the axis
 	var axis = sa.el('#' + xOrY + 'Axis');
 	if (type === 'hmtime') {
 		//hh:mm data
+		//make it look like a telephone numpad for phones
 		axis.type = 'tel';
+		//use Cleave.js to format the input if it's a time (it handles input masking, which is how it validates the time and puts the ':' in the input box automatically)
 		axis = new Cleave('#' + xOrY + 'Axis', {
 			time: true,
 			timePattern: ['h', 'm']
 		});
+		//make a function stored at the x or y property of the global getData object which will return the value
 		getData[xOrY] = function() {
 			//sa.l(axis);
+			//prefix with h for hh:mm time
 			return 'h' + axis.getFormattedValue();
 		}
 	} else if (type === 'mstime') {
@@ -65,12 +79,13 @@ function setup_inputs(xOrY) {
 		});
 		getData[xOrY] = function() {
 			//sa.l(axis);
+			//prefix with m for mm:ss time
 			return 'm' + axis.getFormattedValue();
 		}
 	} else {
 		//it is a number
 		
-		//because of iOS idiosyncrasies detailed in the Log
+		//because of iOS idiosyncrasies detailed in the Log v
 		if (iOS === false || iOS > 12.2) {
 			axis.type = 'text';
 			axis.inputmode = 'numeric';
@@ -78,13 +93,15 @@ function setup_inputs(xOrY) {
 		} else {
 			axis.type = 'number';
 		}
+		// ^
 		getData[xOrY] = function() {
 			//sa.l(axis);
+			//prefix with n for a number
 			return 'n' + axis.value;
 		}
 	}
 	sa.el('#' + xOrY + 'Axis').addEventListener('keydown', function(e) {
-		//when the user presses enter (ASCII 13), it runs the same function as when the record data button is pressed
+		//when the user presses enter (ASCII 13) in either input box, it runs the same function as when the record data button is pressed, i.e. save the data
 		if (e.keyCode === 13) {
 			save_the_data(e);
 		}
@@ -92,22 +109,19 @@ function setup_inputs(xOrY) {
 }
 
 function save_the_data(e) {
+	//this function runs when the button is clicked
 	sa.el('#app').classList.add('validity');
 	var newResults = [];
 	var xValue = getData.x();
 	var yValue = getData.y();
 	sa.l(xValue, yValue);
+	//if the x value is good
 	if (sa.test_data(xValue)) {
+		//and the y value is good
 		if (sa.test_data(yValue)) {
-// 			if (min_max_test() && minMaxGood) {
-				//good
-				notify(true);
-				real_save_data(xValue, yValue);
-// 			} else {
-// 				minMaxGood = true
-// 				notify('One or both of the 
-// 			}
-			
+			//good
+			notify(true);
+			real_save_data(xValue, yValue);
 		} else {
 			notify(false, 'y');
 		}
@@ -116,6 +130,7 @@ function save_the_data(e) {
 	}
 }
 
+//make sure that the keyboard doesn't obscure the inputs by scrolling the input into view
 document.querySelectorAll('input').forEach(function(el){
 	el.addEventListener('focus', function(e){
 		el.scrollIntoView(false);
@@ -136,18 +151,20 @@ function real_save_data(x,y) {
 	var hash = window.location.hash.substr(1);
 	var id = 'data_' + hash;
 	return sa.sget(db, id)
+	//get the data document
 	.then(function(results) {
 		sa.l(results.data);
 		var newData = sa.deep_clone(results.data);
 		//test the subtopic length
 		if (metadata.subtopics.length === 0) {
-			//default
+			//default is the subtopic name if there's no subtopics
 			newData.default[0].push(x);
 			newData.default[1].push(y);
 			
 			var oldX = sa.deep_clone(newData.default[0]);
 			var oldY = sa.deep_clone(newData.default[1]);
 			
+			//run the selection sort after adding the data to the array
 			var newXY = sa.selection_sort(oldX, oldY);
 			newData.default[0] = newXY[0];
 			newData.default[1] = newXY[1];
@@ -166,6 +183,7 @@ function real_save_data(x,y) {
 		}
 		sa.l(newData);
 		results.data = newData;
+		//save data to database
 		return sa.sset(db, results)
 	}).then(function(){
 		sa.el('#saveStatus').classList.remove('hidden');
@@ -175,6 +193,6 @@ function real_save_data(x,y) {
 				location.href = './results.html#' + window.location.hash.substr(1);
 				location.reload();
 			}, 100);
-		}, 1000);
+		}, 2800);
 	});
 }

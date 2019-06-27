@@ -1,15 +1,27 @@
 /* this stylesheet is common to all pages on the site, though some pages may have a more specific page stylesheet as well */
 
+/*
+	the colour scheme:
+		#1A535C is the dark-green-ish colour
+		#F7FFF7 is the white-ish colour
+*/
+
+
 /* */
 /* heading – common on all pages */
 .title {
+	/* the title will fill the width of the screen, be centered, have a background colour */
 	display: flex;
 	justify-content: center;
 	background-color: #1A535C;
 	margin-top: 0;
+	/* technically, a "rem" is the font-size of the root element, but for this project think of 1rem == 16px */
+	/* this applies 8px padding above and below the title, but 0 to the sides */
 	padding: 0.5rem 0 0.5rem 0;
 }
+/* this applies the style to elements with the class="title", as well as all a elements directly inside an element with class="title" */
 .title, .title > a {
+	/* don't want an underline for a normal link showing up on the main title */
 	text-decoration: none;
 	color: #F7FFF7 !important;
 }
@@ -22,26 +34,23 @@ body {
 	background-color: #F7FFF7;
 }
 
+/* utility class when something shouldn't be shown */
 .hidden {
 	display: none !important;
 }
 
-
-.app {
-/* 	margin-left: 1rem; */
-}
-
+/* to add a bit of space to the bottom of each page, add a margin to the bottom of the last element */
 body:last-child {
 	margin-bottom: 1rem;
 }
 
 /* */
 /* individual element styles */
+
+/* style links so they don't have the ugly default styles */
 a {
 	color: black;
-	text-decoration-color: #5D737E;
-/* 	#1A535C; */
-/* 	position: relative; */
+	text-decoration-color: #1A535C;
 }
 a:visited {
 	color: black;
@@ -69,17 +78,18 @@ a:hover {
 	width: 100%;
 	position: absolute;
 }
-
 .nice-link:active {
 	position: relative;
 }
 
+/* I decided to make my own style for links on the homepage where a border surrounds the active (being-clicked) link */
 .nice-links:active {
 	border: 2px solid #1A535C;
 	padding: 2px;
 }
 
 /* partly from https://css-tricks.com/css-basics-styling-links-like-boss/ */
+/* it adds a nice pushed-in effect to a button by adding a shadow that is 5px high below the element, then when it is being clicked it removes the shadow and moves the element down 5px, simulating the push-in effect */
 .pushButton {
 	border: unset;
 	display: block;
@@ -87,22 +97,29 @@ a:hover {
 	border-radius: 0.35rem;
 	text-decoration: none;
 	position: relative;
+	/* shorthand for: 1rem of margin above, auto margin left, 0 margin below, auto margin right */
+	/* the left and right auto margin basically centers the button in the screen */
+	margin: 1rem auto 0 auto;
 	/* don't forget to set color, background-color and box-shadow: 0 5px 0 #00458F; */
 }
 .pushButton:active {
 	box-shadow: none !important;
 	top: 5px;
 }
+/* I made a few colour styles */
+/* red delete */
 .pushButton.red {
 	color: #F7FFF7;
 	background-color: #DA2B3C;
 	box-shadow: 0 5px 0 darkred;
 }
+/* green action */
 .pushButton.green {
 	color: #F7FFF7;
 	background-color: #218739;
 	box-shadow: 0 5px 0 #186329;
 }
+/* blue link */
 .pushButton.blue {
 	color: #F7FFF7;
 	background-color: #0071EB;
@@ -110,21 +127,10 @@ a:hover {
 }
 
 
-
-.save-button {
-	/* margin-top: 1rem; */
-	background-color: #4CEFE4;
-	display: block;
-	/* shorthand for: 1rem of margin above, auto margin left, 0 margin below, auto margin right */
-	/* the left and right auto margin basically centers the button in the screen */
-	margin: 1rem auto 0 auto;
-	background-color: #218739;
-	color: white;
-}
 button {
 	cursor: pointer;
 }
-
+/* label was initially inline */
 label {
 	display: block;
 }
@@ -151,10 +157,11 @@ select {
 	margin-bottom: 1rem;
 }
 
+/* add a red border or outline to invalid inputs */
 .validity input:invalid {
-	/* background-color: #D32F2F; */
 	border-color: #D32F2F;
 }
+/* you can't set the border of a radio input, so we set an outline */
 .validity input[type="radio"]:invalid {
 	outline: 1px solid #CF0B00;
 }
@@ -179,7 +186,11 @@ select {
 	grid-column: span 2 / auto;
 }
 
+/*  */
+/*  */
 /* centering */
+/*  */
+/*  */
 .center-text {
 	text-align: center;
 }
@@ -191,10 +202,4 @@ select {
 }
 .center-grid {
 	display: grid;
-	/* grid-gap: 2rem; */
-}
-
-.no-margin {
-	/* because of the main container styling having a default 1rem margin left, we need a way to counteract it */
-	margin-left: -1rem;
 }

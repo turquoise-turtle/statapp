@@ -12,6 +12,7 @@ db.info().then(function(){
 	sa.el('#bestOption').href = './bestoption.html#' + window.location.hash.substr(1);
 	
 	sa.l(dataset);
+	//check if there is at least some data to graph
 	var isThereData = false;
 	Object.keys(dataset).forEach(function(subtopic) {
 		if (dataset[subtopic][0].length > 0) {
@@ -20,6 +21,7 @@ db.info().then(function(){
 		}
 	});
 	
+	//don't run the graphing function if there's no data
 	if (isThereData) {
 		graph_everything();
 	} else {
@@ -33,10 +35,12 @@ db.info().then(function(){
 sa.el('#graphType').addEventListener('change', graph_everything);
 
 function graph_everything() {
+	//graphDataset is the master data array
 	var graphDataset = [];
 	var layout = {
 		showlegend: true
 	};
+	
 	Object.keys(dataset).forEach(function(subtopic) {
 		sa.l(subtopic, dataset[subtopic]);
 		var currentAxisDataset = {
@@ -53,7 +57,7 @@ function graph_everything() {
 			
 		};
 		
-		
+		//different graphs need different combinations of data
 		switch (sa.el('#graphType').value) {
 			case 'scatter':
 				currentAxisDataset.x = dataset_to_dataset(dataset[subtopic][0], 'x');
@@ -65,19 +69,13 @@ function graph_everything() {
 				currentAxisDataset.y = dataset_to_dataset(dataset[subtopic][1], 'y');
 				currentAxisDataset.type = 'box';
 				break;
-// 			case 'histogram':
-// 				currentAxisDataset.type = 'histogram';
-// 				currentAxisDataset.histfunc = 'avg';
-// 				currentAxisDataset.x = dataset_to_dataset(dataset[subtopic][0], 'x');
-// 				currentAxisDataset.y = dataset_to_dataset(dataset[subtopic][1], 'y', true);
-// 				break;
 		}
 		
 		graphDataset.push(currentAxisDataset);
 	});
 	sa.l(graphDataset);
 	
-	
+	//add labels to axes and format into hh:mm or mm:ss time if appropriate
 	for (var xOrY of ['x', 'y']) {
 		layout[xOrY + 'axis'] = {
 			title: metadata[xOrY + 'Name']
@@ -89,12 +87,14 @@ function graph_everything() {
 		}
 	}
 	
+	//show plotly.js bar
 	var options = {
 		displayModeBar: true,
 		displaylogo: false,
 		responsive: true
 	}
 	
+	//plotly.js graphs all the data
 	Plotly.newPlot('graphHere', graphDataset, layout, options);
 }
 

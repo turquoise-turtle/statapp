@@ -88,10 +88,10 @@ function save_topic(event) {
 		sa.el('#app').classList.add('validity');
 		return;
 	}
-// 	if (sa.el('input[name="y_better"]:checked') == null) {
 	
 	var topicObject = {};
 	
+	//get the values
 	var topicName = sa.el('#topicName').value;
 	topicObject.name = topicName;
 	var topicId = uuid();
@@ -111,34 +111,36 @@ function save_topic(event) {
 	topicObject['xName'] = xName;
 	var xType = sa.el('#xType').value;
 	topicObject['xType'] = xType;
-	if (xType == 'number') {
-		var xMinBool = sa.el('#xMinBool').checked;
-		var xMinValue = sa.el('#xMinValue').value;
-		var xMaxBool = sa.el('#xMaxBool').checked;
-		var xMaxValue = sa.el('#xMaxValue').value;
-		
-		topicObject['xMinBool'] = xMinBool;
-		topicObject['xMinValue'] = xMinValue;
-		topicObject['xMaxBool'] = xMaxBool;
-		topicObject['xMaxValue'] = xMaxValue;
-	}
+	//unnecessary functionality
+	// if (xType == 'number') {
+// 		var xMinBool = sa.el('#xMinBool').checked;
+// 		var xMinValue = sa.el('#xMinValue').value;
+// 		var xMaxBool = sa.el('#xMaxBool').checked;
+// 		var xMaxValue = sa.el('#xMaxValue').value;
+// 		
+// 		topicObject['xMinBool'] = xMinBool;
+// 		topicObject['xMinValue'] = xMinValue;
+// 		topicObject['xMaxBool'] = xMaxBool;
+// 		topicObject['xMaxValue'] = xMaxValue;
+// 	}
 	
 	
 	var yName = sa.el('#yName').value;
 	topicObject['yName'] = yName;
 	var yType = sa.el('#yType').value;
 	topicObject['yType'] = yType;
-	if (yType == 'number') {
-		var yMinBool = sa.el('#yMinBool').checked;
-		var yMinValue = sa.el('#yMinValue').value;
-		var yMaxBool = sa.el('#yMaxBool').checked;
-		var yMaxValue = sa.el('#yMaxValue').value;
-		
-		topicObject['yMinBool'] = yMinBool;
-		topicObject['yMinValue'] = yMinValue;
-		topicObject['yMaxBool'] = yMaxBool;
-		topicObject['yMaxValue'] = yMaxValue;
-	}
+	//unnecessary functionality
+	// if (yType == 'number') {
+// 		var yMinBool = sa.el('#yMinBool').checked;
+// 		var yMinValue = sa.el('#yMinValue').value;
+// 		var yMaxBool = sa.el('#yMaxBool').checked;
+// 		var yMaxValue = sa.el('#yMaxValue').value;
+// 		
+// 		topicObject['yMinBool'] = yMinBool;
+// 		topicObject['yMinValue'] = yMinValue;
+// 		topicObject['yMaxBool'] = yMaxBool;
+// 		topicObject['yMaxValue'] = yMaxValue;
+// 	}
 	
 	//the following goes through all inputs, finds which ones have the attribute name="y_better" and then picks which one is checked https://stackoverflow.com/a/15839451/
 	var yBetter = sa.el('input[name="y_better"]:checked').value;
@@ -179,10 +181,11 @@ function save_topic(event) {
 		}
 		sa.l(topicResults);
 		
-		//because PouchDB needs a revision number when putting something into the db, it's easier to get that doc from the db, change it, and then put it back in one go instead of storing it somewhere on this page.
+		//because PouchDB needs a revision number when putting something into the db, it's easier to get that doc from the db, change it, and then put it back in one go
 		return sa.sset(db, [doc, topicResults]);
 		
 	}).then(function(success){
+		//show a success message
 		sa.el('#saveStatus').classList.remove('hidden');
 		setTimeout(function() {
 			sa.el('#saveStatus').classList.add('hidden');
@@ -193,6 +196,7 @@ function save_topic(event) {
 	});
 }
 
+//used very early on in the testing process
 function sampledata() {
 	sa.el('#topicName').value = 'topic name here';
 	sa.el('#xName').value = 'x axis name here';

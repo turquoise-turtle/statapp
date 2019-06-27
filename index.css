@@ -46,8 +46,8 @@
 	padding-bottom: 0.5rem;
 }
 .card, .card a {
-/* 	background-color: #1A535C; */
-/* 	color: #F7FFF7 !important; */
+	/* background-color: #1A535C; */
+	/* color: #F7FFF7 !important; */
 	
 /* 	bg #2A8476
   fg #EDEAD0 
@@ -61,7 +61,7 @@
   
   
   */
-}
+	}
 
 /*.card-links > a:nth-child(even):after {
 	content: '|';
