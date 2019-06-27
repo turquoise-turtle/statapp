@@ -5,7 +5,7 @@ var db = new PouchDB('statapp', {auto_compaction: true});
 
 //wait till the db is open
 db.info().then(function (info) {
-	console.log(info);
+	sa.l(info);
 	//get the document 'meta_initialised' to see if the db has been setup
 	return sa.sget(db, 'meta_initialised');
 }).then(function(e) {
@@ -24,10 +24,10 @@ db.info().then(function (info) {
 		m.render(root, toRenderList);
 	}
 	
-}).catch(function(e) {
+}).catch(function(error) {
 	//this will run if there is an error...
-	if (e.reason == 'missing') {
-		if (e.docId == 'meta_initialised') {
+	if (error.reason == 'missing') {
+		if (error.docId == 'meta_initialised') {
 			//... if the document is missing then we can initialise the db here
 			//initialise database
 			initialise_db(db);
@@ -35,7 +35,7 @@ db.info().then(function (info) {
 		}
 	} else {
 		//there's a different error so log it to the console
-		console.error(e)
+		sa.l(error)
 	}
 });
 	
